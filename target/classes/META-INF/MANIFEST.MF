@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: LE TUAN THANH
+Build-Jdk: 15.0.2
+Implementation-Title: estatespringboot
+Implementation-Version: 1.0
+Implementation-Vendor-Id: com.laptrinhjavaweb
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/estatespringboot
+Created-By: Maven Integration for Eclipse
+
