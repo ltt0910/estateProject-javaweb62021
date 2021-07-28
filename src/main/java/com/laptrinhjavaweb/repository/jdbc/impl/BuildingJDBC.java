@@ -29,9 +29,10 @@ public class BuildingJDBC implements IBuildingJDBC {
 			conn = DriverManager.getConnection(url, user, pass);
 			stmt = conn.createStatement();
 			StringBuilder sql1 = new StringBuilder("select b.name as name"
-					+ ",b.street as street,b.ward as ward,b.managername as namemanager,b.managerphone as phonemanager"
+					+ ",b.street as street,b.ward as ward,district.name as district"
+					+ ",b.managername as namemanager,b.managerphone as phonemanager"
 					+ ",b.numberofbasement as numberofbasement,b.floorarea as floorarea" + ",b.rentprice as rentprice");
-			StringBuilder sql2 = new StringBuilder(" from building as b");
+			StringBuilder sql2 = new StringBuilder(" from building as b inner join district on district.id=b.districtid ");
 			StringBuilder sql3 = new StringBuilder(" where 1=1");
 
 			if (searchBuilding.getName() != null && searchBuilding.getName() != "") {
@@ -75,8 +76,6 @@ public class BuildingJDBC implements IBuildingJDBC {
 				sql3.append(")");
 			}
 			if (searchBuilding.getDistrict() != null && searchBuilding.getDistrict()!="") {
-				sql1.append(" ,district.name as district");
-				sql2.append(" inner join district on district.id=b.districtid");
 				sql3.append(" and district.code = '" + searchBuilding.getDistrict() + "'");
 			}
 			
@@ -115,9 +114,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 				buildingEntity.setFloorArea(rs.getInt("floorarea"));
 				buildingEntity.setCostRent(rs.getInt("rentprice"));
 				buildingEntity.setNumberOfBasement(rs.getInt("numberofbasement"));
-				if(searchBuilding.getDistrict() != null && searchBuilding.getDistrict()!="") {
-					buildingEntity.setDistrict(rs.getString("district"));
-				}
+				buildingEntity.setDistrict(rs.getString("district"));
 				buildingEntity.setStreet(rs.getString("street"));
 				buildingEntity.setWard(rs.getString("ward"));
 				buildingEntity.setNameManager(rs.getString("namemanager"));

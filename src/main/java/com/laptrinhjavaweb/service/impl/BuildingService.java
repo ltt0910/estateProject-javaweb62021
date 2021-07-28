@@ -32,8 +32,11 @@ public class BuildingService implements IBuildingService {
 	@Transactional
 	@Override
 	public List<BuildingDTO> findAll(BuildingDTO searchBuilding) {
+		BuildingDTO x = new BuildingDTO();
+		HashMap<BuildingDTO, BuildingDTO> map = new HashMap<BuildingDTO, BuildingDTO>();
+		map.put(x, searchBuilding);
 		List<BuildingDTO> result = new ArrayList<>();
-		List<BuildingEntity> buildingEntities = buildingJdbc.findAll(searchBuilding);
+		List<BuildingEntity> buildingEntities = buildingJdbc.findAll(map.get(x));
 		for(BuildingEntity item:buildingEntities) {
 			BuildingDTO buildingDTO = new BuildingDTO();
 			buildingDTO = buildingConverter.convertToDTO(item);
