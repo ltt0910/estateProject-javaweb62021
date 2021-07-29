@@ -31,7 +31,7 @@ public class BuildingService implements IBuildingService {
 
 	@Transactional
 	@Override
-	public List<BuildingDTO> findAll(BuildingDTO searchBuilding) {
+	public List<BuildingDTO> findListBuilding(BuildingDTO searchBuilding) {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		

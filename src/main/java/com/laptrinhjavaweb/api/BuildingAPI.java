@@ -46,7 +46,7 @@ public class BuildingAPI {
 		searchBuilding.setManagerPhone(managerPhone);
 		searchBuilding.setStaffId(staffId);
 		List<BuildingDTO> result = new ArrayList<BuildingDTO>();
-		result = buildingService.findAll(searchBuilding);
+		result = buildingService.findListBuilding(searchBuilding);
 		return result;
 	}
 	
