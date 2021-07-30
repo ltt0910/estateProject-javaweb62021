@@ -9,9 +9,5 @@ import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 
 public interface IBuildingService {
-//	Map<String, String> getDistricts();
-//	Map<String, String> getBuildingTypes();
-//	BuildingDTO save(BuildingDTO newBuilding);
-//	List<BuildingDTO> findBy();
 	List<BuildingDTO> findListBuilding(BuildingDTO searchBuilding);
 }

@@ -33,30 +33,30 @@ public class BuildingService implements IBuildingService {
 	@Override
 	public List<BuildingDTO> findListBuilding(BuildingDTO searchBuilding) {
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> mapBuilding = new HashMap<String, Object>();
 		
-		map.put("name", searchBuilding.getName());
-		map.put("numberofbasement",searchBuilding.getNumberOfBasement());
-		map.put("district", searchBuilding.getDistrict());
-		map.put("areaRentFrom", searchBuilding.getAreaRentFrom());
-		map.put("areaRentTo",searchBuilding.getAreaRentTo());
-		map.put("buildingTypes", searchBuilding.getBuildingTypes());
-		map.put("costRentFrom", searchBuilding.getCostRentFrom());
-		map.put("costRentTo", searchBuilding.getCostRentTo());
-		map.put("ward",searchBuilding.getWard());
-		map.put("street", searchBuilding.getStreet());
-		map.put("managerName", searchBuilding.getManagerName());
-		map.put("managerPhone",searchBuilding.getManagerPhone());
-		map.put("staffId", searchBuilding.getStaffId());
+		mapBuilding.put("name", searchBuilding.getName());
+		mapBuilding.put("numberOfBasement",searchBuilding.getNumberOfBasement());
+		mapBuilding.put("district", searchBuilding.getDistrict());
+		mapBuilding.put("areaRentFrom", searchBuilding.getAreaRentFrom());
+		mapBuilding.put("areaRentTo",searchBuilding.getAreaRentTo());
+		mapBuilding.put("buildingTypes", searchBuilding.getBuildingTypes());
+		mapBuilding.put("costRentFrom", searchBuilding.getCostRentFrom());
+		mapBuilding.put("costRentTo", searchBuilding.getCostRentTo());
+		mapBuilding.put("ward",searchBuilding.getWard());
+		mapBuilding.put("street", searchBuilding.getStreet());
+		mapBuilding.put("managerName", searchBuilding.getManagerName());
+		mapBuilding.put("managerPhone",searchBuilding.getManagerPhone());
+		mapBuilding.put("staffId", searchBuilding.getStaffId());
 		
-		List<BuildingDTO> result = new ArrayList<>();
-		List<BuildingEntity> buildingEntities = buildingJdbc.findAll(map);
-		for(BuildingEntity item:buildingEntities) {
+		List<BuildingDTO> buildingList = new ArrayList<>();
+		List<BuildingEntity> buildingEntities = buildingJdbc.findListBuilding(mapBuilding);
+		for(BuildingEntity buildingEntity:buildingEntities) {
 			BuildingDTO buildingDTO = new BuildingDTO();
-			buildingDTO = buildingConverter.convertToDTO(item);
-			result.add(buildingDTO);
+			buildingDTO = buildingConverter.convertToDTO(buildingEntity);
+			buildingList.add(buildingDTO);
 		}
-		return result;
+		return buildingList;
 	}
 	
 }

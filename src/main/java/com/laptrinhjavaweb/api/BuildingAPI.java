@@ -18,8 +18,8 @@ public class BuildingAPI {
 	private IBuildingService buildingService = new BuildingService();
 	
 	@GetMapping
-	public List<BuildingDTO> findBy(@RequestParam(value = "name",required = false) String name,
-									@RequestParam(value = "numberofbasement",required = false)Integer numberofbasement,
+	public List<BuildingDTO> findListBuilding(@RequestParam(value = "name",required = false) String name,
+									@RequestParam(value = "numberOfBasement",required = false)Integer numberOfBasement,
 									@RequestParam(value = "district",required = false)String district,
 									@RequestParam(value = "areaRentFrom",required = false)Integer areaRentFrom,
 									@RequestParam(value = "areaRentTo",required = false)Integer areaRentTo,
@@ -33,7 +33,7 @@ public class BuildingAPI {
 									@RequestParam(value = "staffId",required = false)Long staffId){
 		BuildingDTO searchBuilding = new BuildingDTO();
 		searchBuilding.setName(name);
-		searchBuilding.setNumberOfBasement(numberofbasement);
+		searchBuilding.setNumberOfBasement(numberOfBasement);
 		searchBuilding.setAreaRentFrom(areaRentFrom);
 		searchBuilding.setAreaRentTo(areaRentTo);
 		searchBuilding.setCostRentFrom(costRentFrom);
@@ -45,9 +45,10 @@ public class BuildingAPI {
 		searchBuilding.setManagerName(managerName);
 		searchBuilding.setManagerPhone(managerPhone);
 		searchBuilding.setStaffId(staffId);
-		List<BuildingDTO> result = new ArrayList<BuildingDTO>();
-		result = buildingService.findListBuilding(searchBuilding);
-		return result;
+		
+		List<BuildingDTO> buildingList = new ArrayList<BuildingDTO>();
+		buildingList = buildingService.findListBuilding(searchBuilding);
+		return buildingList;
 	}
 	
 

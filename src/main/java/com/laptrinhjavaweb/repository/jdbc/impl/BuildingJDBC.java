@@ -23,7 +23,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 		Connection conn = null; 
 		Statement stmt = null;
 		ResultSet rs = null;
-		List<BuildingEntity> result = new ArrayList<>();
+		List<BuildingEntity> buildingEntities = new ArrayList<>();
 		try {
 			int a = 0;
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -40,8 +40,8 @@ public class BuildingJDBC implements IBuildingJDBC {
 				sql3.append(" and b.name like '%" + mapBuilding.get("name") + "%'");
 			}
 			
-			if (mapBuilding.get("numberofbasement")!= null) {
-				sql3.append(" and b.numberofbasement =" + mapBuilding.get("numberofbasement") + "");
+			if (mapBuilding.get("numberOfBasement")!= null) {
+				sql3.append(" and b.numberofbasement =" + mapBuilding.get("numberOfBasement") + "");
 			}
 			
 			if (mapBuilding.get("costRentFrom")!= null) {
@@ -95,7 +95,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 			}
 
 			if (mapBuilding.get("staffId") != null) {
-				sql2.append(" left join assignmentbuilding on assignmentbuilding.buildingid=b.id ");
+				sql2.append(" inner join assignmentbuilding on assignmentbuilding.buildingid=b.id ");
 				sql3.append(" and assignmentbuilding.staffid = " + mapBuilding.get("staffId") + "");
 			}
 			sql3.append(" group by b.id");
@@ -119,7 +119,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 						}
 					}
 				}
-				result.add(buildingEntity);
+				buildingEntities.add(buildingEntity);
 			}
 		} catch (Exception e) {
 			e.getMessage();
@@ -135,7 +135,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 				se.getMessage();
 			}
 		}
-		return result;
+		return buildingEntities;
 	}
 
 }
