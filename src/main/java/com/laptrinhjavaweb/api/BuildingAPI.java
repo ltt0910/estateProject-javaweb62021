@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.api;
 
+import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.service.IBuildingService;
 import com.laptrinhjavaweb.service.impl.BuildingService;
@@ -31,7 +32,8 @@ public class BuildingAPI {
 									@RequestParam(value = "managerName",required = false)String managerName,
 									@RequestParam(value = "managerPhone",required = false)String managerPhone,
 									@RequestParam(value = "staffId",required = false)Long staffId){
-		BuildingDTO searchBuilding = new BuildingDTO();
+		
+		BuildingSearchBuilder searchBuilding = new BuildingSearchBuilder();
 		searchBuilding.setName(name);
 		searchBuilding.setNumberOfBasement(numberOfBasement);
 		searchBuilding.setAreaRentFrom(areaRentFrom);

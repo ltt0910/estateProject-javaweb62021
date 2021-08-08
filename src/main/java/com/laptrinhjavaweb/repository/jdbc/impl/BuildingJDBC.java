@@ -30,7 +30,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 			conn = DriverManager.getConnection(url, user, pass);
 			stmt = conn.createStatement();
 			StringBuilder sql1 = new StringBuilder("select b.name as name"
-					+ ",b.street as street,b.ward as ward,district.name as district"
+					+ ",b.street as street,b.ward as ward,district.name as district,b.servicefee as servicefee,b.brokeragefee as brokeragefee"
 					+ ",b.managername as namemanager,b.managerphone as phonemanager"
 					+ ",b.numberofbasement as numberofbasement,b.floorarea as floorarea" + ",b.rentprice as rentprice");
 			StringBuilder sql2 = new StringBuilder(" from building as b inner join district on district.id=b.districtid ");
@@ -106,19 +106,13 @@ public class BuildingJDBC implements IBuildingJDBC {
 				buildingEntity.setName(rs.getString("name"));
 				buildingEntity.setFloorArea(rs.getInt("floorarea"));
 				buildingEntity.setCostRent(rs.getInt("rentprice"));
-				buildingEntity.setNumberOfBasement(rs.getInt("numberofbasement"));
 				buildingEntity.setDistrict(rs.getString("district"));
 				buildingEntity.setStreet(rs.getString("street"));
 				buildingEntity.setWard(rs.getString("ward"));
 				buildingEntity.setNameManager(rs.getString("namemanager"));
 				buildingEntity.setPhoneManager(rs.getString("phonemanager"));
-				if(types!=null) {
-					for (int i = 0; i < types.length; i++) {
-						if (types[i] != null) {
-							buildingEntity.setBuildingRentType(rs.getString("category"));
-						}
-					}
-				}
+				buildingEntity.setBrokerageFee(rs.getString("brokeragefee"));
+				buildingEntity.setServiceFee(rs.getString("servicefee"));
 				buildingEntities.add(buildingEntity);
 			}
 		} catch (Exception e) {

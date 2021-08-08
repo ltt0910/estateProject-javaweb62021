@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.enums.BuildingTypesEnum;
@@ -31,7 +32,7 @@ public class BuildingService implements IBuildingService {
 
 	@Transactional
 	@Override
-	public List<BuildingDTO> findListBuilding(BuildingDTO searchBuilding) {
+	public List<BuildingDTO> findListBuilding(BuildingSearchBuilder searchBuilding) {
 		
 		HashMap<String, Object> mapBuilding = new HashMap<String, Object>();
 		
@@ -51,6 +52,7 @@ public class BuildingService implements IBuildingService {
 		
 		List<BuildingDTO> buildingList = new ArrayList<>();
 		List<BuildingEntity> buildingEntities = buildingJdbc.findListBuilding(mapBuilding);
+		
 		for(BuildingEntity buildingEntity:buildingEntities) {
 			BuildingDTO buildingDTO = new BuildingDTO();
 			buildingDTO = buildingConverter.convertToDTO(buildingEntity);

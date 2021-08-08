@@ -9,5 +9,5 @@ import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 
 public interface IBuildingService {
-	List<BuildingDTO> findListBuilding(BuildingDTO searchBuilding);
+	List<BuildingDTO> findListBuilding(BuildingSearchBuilder searchBuilding);
 }
