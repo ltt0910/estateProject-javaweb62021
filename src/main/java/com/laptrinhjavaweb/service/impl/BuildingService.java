@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.enums.BuildingTypesEnum;
@@ -31,15 +32,33 @@ public class BuildingService implements IBuildingService {
 
 	@Transactional
 	@Override
-	public List<BuildingDTO> findAll(BuildingDTO searchBuilding) {
-		List<BuildingDTO> result = new ArrayList<>();
-		List<BuildingEntity> buildingEntities = buildingJdbc.findAll(searchBuilding);
-		for(BuildingEntity item:buildingEntities) {
+	public List<BuildingDTO> findListBuilding(BuildingSearchBuilder searchBuilding) {
+		
+		HashMap<String, Object> mapBuilding = new HashMap<String, Object>();
+		
+		mapBuilding.put("name", searchBuilding.getName());
+		mapBuilding.put("numberOfBasement",searchBuilding.getNumberOfBasement());
+		mapBuilding.put("district", searchBuilding.getDistrict());
+		mapBuilding.put("areaRentFrom", searchBuilding.getAreaRentFrom());
+		mapBuilding.put("areaRentTo",searchBuilding.getAreaRentTo());
+		mapBuilding.put("buildingTypes", searchBuilding.getBuildingTypes());
+		mapBuilding.put("costRentFrom", searchBuilding.getCostRentFrom());
+		mapBuilding.put("costRentTo", searchBuilding.getCostRentTo());
+		mapBuilding.put("ward",searchBuilding.getWard());
+		mapBuilding.put("street", searchBuilding.getStreet());
+		mapBuilding.put("managerName", searchBuilding.getManagerName());
+		mapBuilding.put("managerPhone",searchBuilding.getManagerPhone());
+		mapBuilding.put("staffId", searchBuilding.getStaffId());
+		
+		List<BuildingDTO> buildingList = new ArrayList<>();
+		List<BuildingEntity> buildingEntities = buildingJdbc.findListBuilding(mapBuilding);
+		
+		for(BuildingEntity buildingEntity:buildingEntities) {
 			BuildingDTO buildingDTO = new BuildingDTO();
-			buildingDTO = buildingConverter.convertToDTO(item);
-			result.add(buildingDTO);
+			buildingDTO = buildingConverter.convertToDTO(buildingEntity);
+			buildingList.add(buildingDTO);
 		}
-		return result;
+		return buildingList;
 	}
 	
 }

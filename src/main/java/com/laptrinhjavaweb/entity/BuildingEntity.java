@@ -18,6 +18,8 @@ public class BuildingEntity{
 	private String buildingRentType;
 	private String nameManager;
 	private String phoneManager;
+	private String serviceFee;
+	private String brokerageFee;
 
     public String getName() {
         return name;
@@ -106,6 +108,23 @@ public class BuildingEntity{
 	public void setAreaRent(Integer areaRent) {
 		this.areaRent = areaRent;
 	}
+
+	public String getServiceFee() {
+		return serviceFee;
+	}
+
+	public void setServiceFee(String serviceFee) {
+		this.serviceFee = serviceFee;
+	}
+
+	public String getBrokerageFee() {
+		return brokerageFee;
+	}
+
+	public void setBrokerageFee(String brokerageFee) {
+		this.brokerageFee = brokerageFee;
+	}
     
+	
     
 }
