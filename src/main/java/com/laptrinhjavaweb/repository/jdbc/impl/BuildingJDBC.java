@@ -13,47 +13,15 @@ import java.util.List;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.repository.jdbc.IBuildingJDBC;
+import com.laptrinhjavaweb.repository.jdbc.IDistrictJDBC;
 
 public class BuildingJDBC implements IBuildingJDBC {
+	public IDistrictJDBC districtJDBC = new DistrictJDBC();
 	public static final String jdbc_driver = "com.mysql.jdbc.Driver";
 	public static final String url = "jdbc:mysql://localhost:3306/estatebasic";
 	public static final String user = "root";
 	public static final String pass = "123456";
 	
-	public String getDistrictById(Long districtId) {
-		String districtName = null;
-		Connection conn = null; 
-		Statement stmt = null;
-		ResultSet rs = null;
-		List<BuildingEntity> buildingEntities = new ArrayList<>();
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, pass);
-			stmt = conn.createStatement();
-			String queryGetDistrict = "select name from district where id = "+districtId+"";
-			rs = stmt.executeQuery(queryGetDistrict);
-			while(rs.next()) {
-				districtName = rs.getString("name");
-			}
-		}catch (Exception e) {
-			e.getMessage();
-		} finally {
-			try {
-				if (conn != null)
-					conn.close();
-				if (stmt != null)
-					stmt.close();
-				if (rs != null)
-					rs.close();
-			} catch (SQLException se) {
-				se.getMessage();
-			}
-		}
-		return districtName;
-			
-		
-	}
-
 	@Override
 	public List<BuildingEntity> findListBuilding(HashMap<String, Object> mapBuilding) {
 		Connection conn = null; 
@@ -141,7 +109,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 				buildingEntity.setName(rs.getString("name"));
 				buildingEntity.setFloorArea(rs.getInt("floorarea"));
 				buildingEntity.setRentPrice(rs.getInt("rentprice"));
-				buildingEntity.setDistrict(getDistrictById(rs.getLong("districtid")));
+				buildingEntity.setDistrict(districtJDBC.getDistrictById(rs.getLong("districtid")));
 				buildingEntity.setStreet(rs.getString("street"));
 				buildingEntity.setWard(rs.getString("ward"));
 				buildingEntity.setNameManager(rs.getString("namemanager"));

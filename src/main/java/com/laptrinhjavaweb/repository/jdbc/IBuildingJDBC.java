@@ -8,5 +8,5 @@ import com.laptrinhjavaweb.entity.BuildingEntity;
 
 public interface IBuildingJDBC {
 	List<BuildingEntity> findListBuilding(HashMap<String, Object> mapBuilding);
-	public String getDistrictById(Long dstrictId);
+	
 }
