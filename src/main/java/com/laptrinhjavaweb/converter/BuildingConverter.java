@@ -15,7 +15,7 @@ public class BuildingConverter {
 	
 	public BuildingDTO convertToDTO(BuildingEntity entity) {
 		BuildingDTO dto = modelMapper.map(entity, BuildingDTO.class);
-		dto.setAddress(dto.getStreet() +", "+ dto.getWard() +", "+dto.getDistrict());
+		dto.setAddress(entity.getStreet() +", "+ entity.getWard() +", "+entity.getDistrict());
 		return dto;
 	}
 	
