@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import com.laptrinhjavaweb.dto.BuildingDTO;
@@ -18,6 +19,41 @@ public class BuildingJDBC implements IBuildingJDBC {
 	public static final String url = "jdbc:mysql://localhost:3306/estatebasic";
 	public static final String user = "root";
 	public static final String pass = "123456";
+	
+	public String getDistrictById(Long districtId) {
+		String districtName = null;
+		Connection conn = null; 
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<BuildingEntity> buildingEntities = new ArrayList<>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(url, user, pass);
+			stmt = conn.createStatement();
+			String queryGetDistrict = "select name from district where id = "+districtId+"";
+			rs = stmt.executeQuery(queryGetDistrict);
+			while(rs.next()) {
+				districtName = rs.getString("name");
+			}
+		}catch (Exception e) {
+			e.getMessage();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+				if (stmt != null)
+					stmt.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException se) {
+				se.getMessage();
+			}
+		}
+		return districtName;
+			
+		
+	}
+
 	@Override
 	public List<BuildingEntity> findListBuilding(HashMap<String, Object> mapBuilding) {
 		Connection conn = null; 
@@ -25,13 +61,12 @@ public class BuildingJDBC implements IBuildingJDBC {
 		ResultSet rs = null;
 		List<BuildingEntity> buildingEntities = new ArrayList<>();
 		try {
-			int a = 0;
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(url, user, pass);
 			stmt = conn.createStatement();
 			StringBuilder sql1 = new StringBuilder("select b.name as name"
-					+ ",b.street as street,b.ward as ward,district.name as district,b.servicefee as servicefee,b.brokeragefee as brokeragefee"
-					+ ",b.managername as namemanager,b.managerphone as phonemanager"
+					+ ",b.street as street,b.ward as ward,district.id as districtid,b.servicefee as servicefee,b.brokeragefee as brokeragefee"
+					+ ",b.managername as namemanager,b.managerphone as phonemanager,b.createddate as createDate"
 					+ ",b.numberofbasement as numberofbasement,b.floorarea as floorarea" + ",b.rentprice as rentprice");
 			StringBuilder sql2 = new StringBuilder(" from building as b inner join district on district.id=b.districtid ");
 			StringBuilder sql3 = new StringBuilder(" where 1=1");
@@ -105,14 +140,15 @@ public class BuildingJDBC implements IBuildingJDBC {
 				BuildingEntity buildingEntity = new BuildingEntity();
 				buildingEntity.setName(rs.getString("name"));
 				buildingEntity.setFloorArea(rs.getInt("floorarea"));
-				buildingEntity.setCostRent(rs.getInt("rentprice"));
-				buildingEntity.setDistrict(rs.getString("district"));
+				buildingEntity.setRentPrice(rs.getInt("rentprice"));
+				buildingEntity.setDistrict(getDistrictById(rs.getLong("districtid")));
 				buildingEntity.setStreet(rs.getString("street"));
 				buildingEntity.setWard(rs.getString("ward"));
 				buildingEntity.setNameManager(rs.getString("namemanager"));
 				buildingEntity.setPhoneManager(rs.getString("phonemanager"));
 				buildingEntity.setBrokerageFee(rs.getString("brokeragefee"));
 				buildingEntity.setServiceFee(rs.getString("servicefee"));
+				buildingEntity.setCreatedDate(rs.getDate("createDate"));
 				buildingEntities.add(buildingEntity);
 			}
 		} catch (Exception e) {
@@ -131,5 +167,6 @@ public class BuildingJDBC implements IBuildingJDBC {
 		}
 		return buildingEntities;
 	}
+	
 
 }
