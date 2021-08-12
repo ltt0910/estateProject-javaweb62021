@@ -32,13 +32,12 @@ public class BuildingJDBC implements IBuildingJDBC {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(url, user, pass);
 			stmt = conn.createStatement();
-			StringBuilder sql1 = new StringBuilder("select b.name as name"
-					+ ",b.street as street,b.ward as ward,district.id as districtid,b.servicefee as servicefee,b.brokeragefee as brokeragefee"
+			StringBuilder sql1 = new StringBuilder("select b.name as name,d.id as districtId"
+					+ ",b.street as street,b.ward as ward,b.servicefee as servicefee,b.brokeragefee as brokeragefee"
 					+ ",b.managername as namemanager,b.managerphone as phonemanager,b.createddate as createDate"
 					+ ",b.numberofbasement as numberofbasement,b.floorarea as floorarea" + ",b.rentprice as rentprice");
-			StringBuilder sql2 = new StringBuilder(" from building as b inner join district on district.id=b.districtid ");
+			StringBuilder sql2 = new StringBuilder(" from building as b inner join district as d on d.id = b.districtid");
 			StringBuilder sql3 = new StringBuilder(" where 1=1");
-
 			if (mapBuilding.get("name") != null && mapBuilding.get("name") != "") {
 				sql3.append(" and b.name like '%" + mapBuilding.get("name") + "%'");
 			}
@@ -109,7 +108,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 				buildingEntity.setName(rs.getString("name"));
 				buildingEntity.setFloorArea(rs.getInt("floorarea"));
 				buildingEntity.setRentPrice(rs.getInt("rentprice"));
-				buildingEntity.setDistrict(districtJDBC.getDistrictById(rs.getLong("districtid")));
+				buildingEntity.setDistrictId(rs.getLong("districtId"));
 				buildingEntity.setStreet(rs.getString("street"));
 				buildingEntity.setWard(rs.getString("ward"));
 				buildingEntity.setNameManager(rs.getString("namemanager"));

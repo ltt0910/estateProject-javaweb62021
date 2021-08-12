@@ -10,4 +10,5 @@ import com.laptrinhjavaweb.dto.BuildingDTO;
 
 public interface IBuildingService {
 	List<BuildingDTO> findListBuilding(BuildingSearchBuilder searchBuilding);
+//	String getDistrictById(Long id);
 }
