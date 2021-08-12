@@ -32,7 +32,7 @@ public class BuildingService implements IBuildingService {
 
 	@Autowired
 	private IBuildingJDBC buildingJdbc = new BuildingJDBC();
-
+	private IDistrictJDBC districtJdbc = new DistrictJDBC();
 	@Transactional
 	@Override
 	public List<BuildingDTO> findListBuilding(BuildingSearchBuilder searchBuilding) {
@@ -52,9 +52,12 @@ public class BuildingService implements IBuildingService {
 		mapBuilding.put("staffId", searchBuilding.getStaffId());
 		List<BuildingDTO> buildingList = new ArrayList<>();
 		List<BuildingEntity> buildingEntities = buildingJdbc.findListBuilding(mapBuilding);
+		
 		for(BuildingEntity buildingEntity:buildingEntities) {
 			BuildingDTO buildingDTO = new BuildingDTO();
 			buildingDTO = buildingConverter.convertToDTO(buildingEntity);
+			DistrictEntity districtEntity = districtJdbc.getDistrictById(buildingEntity.getDistrictId());
+			buildingDTO.setAddress(buildingEntity.getStreet()+" , "+buildingEntity.getWard()+" , "+districtEntity.getName());
 			buildingList.add(buildingDTO);
 		}
 		return buildingList;

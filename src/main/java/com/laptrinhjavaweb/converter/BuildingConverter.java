@@ -18,7 +18,6 @@ public class BuildingConverter {
 	private IDistrictJDBC districtJDBC = new DistrictJDBC();
 	public BuildingDTO convertToDTO(BuildingEntity entity) {
 		BuildingDTO dto = modelMapper.map(entity, BuildingDTO.class);
-		dto.setAddress(entity.getStreet() +", "+ entity.getWard() +", "+districtJDBC.getDistrictById(entity.getDistrictId()));
 		return dto;
 	}
 	

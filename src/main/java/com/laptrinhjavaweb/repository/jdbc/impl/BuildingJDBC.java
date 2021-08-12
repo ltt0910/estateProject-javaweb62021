@@ -32,7 +32,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(url, user, pass);
 			stmt = conn.createStatement();
-			StringBuilder sql1 = new StringBuilder("select b.name as name,d.id as districtId"
+			StringBuilder sql1 = new StringBuilder("select b.name as name,b.districtid as district"
 					+ ",b.street as street,b.ward as ward,b.servicefee as servicefee,b.brokeragefee as brokeragefee"
 					+ ",b.managername as namemanager,b.managerphone as phonemanager,b.createddate as createDate"
 					+ ",b.numberofbasement as numberofbasement,b.floorarea as floorarea" + ",b.rentprice as rentprice");
@@ -108,7 +108,7 @@ public class BuildingJDBC implements IBuildingJDBC {
 				buildingEntity.setName(rs.getString("name"));
 				buildingEntity.setFloorArea(rs.getInt("floorarea"));
 				buildingEntity.setRentPrice(rs.getInt("rentprice"));
-				buildingEntity.setDistrictId(rs.getLong("districtId"));
+				buildingEntity.setDistrictId(rs.getLong("district"));
 				buildingEntity.setStreet(rs.getString("street"));
 				buildingEntity.setWard(rs.getString("ward"));
 				buildingEntity.setNameManager(rs.getString("namemanager"));
