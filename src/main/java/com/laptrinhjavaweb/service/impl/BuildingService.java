@@ -56,8 +56,7 @@ public class BuildingService implements IBuildingService {
 		for(BuildingEntity buildingEntity:buildingEntities) {
 			BuildingDTO buildingDTO = new BuildingDTO();
 			buildingDTO = buildingConverter.convertToDTO(buildingEntity);
-			DistrictEntity districtEntity = districtJdbc.getDistrictById(buildingEntity.getDistrictId());
-			buildingDTO.setAddress(buildingEntity.getStreet()+" , "+buildingEntity.getWard()+" , "+districtEntity.getName());
+//			DistrictEntity districtEntity = districtJdbc.getDistrictById(buildingEntity.getDistrictId());
 			buildingList.add(buildingDTO);
 		}
 		return buildingList;
