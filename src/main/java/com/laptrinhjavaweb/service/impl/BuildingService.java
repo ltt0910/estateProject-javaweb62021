@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.converter.BuildingConverter;
+import com.laptrinhjavaweb.converter.DistrictConverter;
 import com.laptrinhjavaweb.dto.BuildingDTO;
+import com.laptrinhjavaweb.dto.DistrictDTO;
 import com.laptrinhjavaweb.enums.BuildingTypesEnum;
 import com.laptrinhjavaweb.enums.DistrictsEnum;
 //import com.laptrinhjavaweb.repository.BuildingRepository;
@@ -26,9 +28,10 @@ import com.laptrinhjavaweb.service.IBuildingService;
 
 
 public class BuildingService implements IBuildingService {
-
-	private BuildingConverter buildingConverter = new BuildingConverter();
 	
+	
+	private BuildingConverter buildingConverter = new BuildingConverter();
+	private DistrictConverter districtConverter = new DistrictConverter();
 
 	@Autowired
 	private IBuildingJDBC buildingJdbc = new BuildingJDBC();
@@ -56,7 +59,7 @@ public class BuildingService implements IBuildingService {
 		for(BuildingEntity buildingEntity:buildingEntities) {
 			BuildingDTO buildingDTO = new BuildingDTO();
 			buildingDTO = buildingConverter.convertToDTO(buildingEntity);
-//			DistrictEntity districtEntity = districtJdbc.getDistrictById(buildingEntity.getDistrictId());
+			BuildingConverter.districtDTO = districtConverter.entityToDto(districtJdbc.getDistrictById(buildingEntity.getDistrictId()));
 			buildingList.add(buildingDTO);
 		}
 		return buildingList;
