@@ -8,6 +8,8 @@ import java.util.List;
 @Table(name = "role")
 public class RoleEntity extends BaseEntity {
 
+    private static final long serialVersionUID = -6525302831793188081L;
+
     @Column(nullable = false)
     private String name;
 

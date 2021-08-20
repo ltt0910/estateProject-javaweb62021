@@ -1,4 +1,4 @@
-use estatebasic;
+cuse springbootweb;
 
 insert into role(code,name) values('ADMIN','Quản trị hệ thống');
 insert into role(code,name) values('USER','người dùng');
