@@ -1,5 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/common/taglib.jsp"%>
+<c:url var="buildingListURL" value="/admin/building-list"/>
 <html>
 <head>
     <title>Danh sách tòa nhà</title>
@@ -44,14 +46,15 @@
 
                     <div class = "widget-body">
                         <div class="widget-main">
-                            <form:form commandName="modelSearch" action="" id="listForm" method="GET">
+                            <form:form commandName="modelSearch" action="${buildingListURL}" id="listForm" method="GET">
                                 <div class = "form-horizontal">
                                     <div class="form-group">
                                         <!-- PAGE CONTENT BEGINS -->
                                         <div class="col-sm-6">
                                             <div>
                                                 <label for = "name">Tên tòa nhà</label>
-                                                <input type = "text" id = "name" class = "form-control" name="name"/>
+                                                <%--<input type = "text" id = "name" class = "form-control" name="name" value="${modelSearch.name}"/>--%>
+                                                <form:input path="name" cssClass="form-control"></form:input>
                                             </div>
                                         </div>
 
@@ -69,27 +72,25 @@
                                         <!-- PAGE CONTENT BEGINS -->
                                         <div class="col-sm-4">
                                             <div>
-                                                <label for = "districtId">Quận hiện có</label>
-                                                <select class="form-control" id="districtId">
-                                                    <option value="">--Chọn quận--</option>
-                                                    <option value="Q1">Quận 1</option>
-                                                    <option value="Q2">Quận 2</option>
-                                                    <option value="Q4">Quận 4</option>
-                                                </select>
+                                                <label>Quận hiện có</label>
+                                                <form:select path="districtId" cssClass="form-control">
+                                                    <form:option value="-1" label="--Quận"/>
+                                                    <form:options items="${district}"/>
+                                                </form:select>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <div>
                                                 <label for = "ward">Phường</label>
-                                                <input type = "text" id = "ward" class = "form-control" />
+                                                <input type = "text" id = "ward" class = "form-control" name="ward" value="${modelSearch.ward}" />
                                             </div>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <div>
                                                 <label for = "street">Đường</label>
-                                                <input type = "text" id = "street" class = "form-control" />
+                                                <input type = "text" id = "street" class = "form-control" name="street" value="${modelSearch.street}" />
                                             </div>
                                         </div>
 
@@ -101,7 +102,7 @@
                                         <div class="col-sm-4">
                                             <div>
                                                 <label for = "numberOfBasement">Số tầng hầm</label>
-                                                <input type = "number" id ="numberOfBasement" class = "form-control" />
+                                                <input type = "number" id ="numberOfBasement" class = "form-control" name="numberOfBasement" />
                                             </div>
                                         </div>
 
@@ -173,34 +174,23 @@
 
                                         <div class="col-sm-4">
                                             <div>
-                                                <label for = "staffId">Nhân viên phụ trách</label>
-                                                <select class="form-control" id="staffId">
-                                                    <option value="">--Chọn nhân viên--</option>
-                                                    <option value="nguyenvana">Nguyễn Văn A</option>
-                                                    <option value="nguyenvanb">Nguyễn Văn B</option>
-                                                    <option value="nguyenvanc">Nguyễn Văn C</option>
-                                                </select>
+                                                <label>Nhân Viên Phụ trách</label>
+                                                <form:select path="staffId" cssClass="form-control">
+                                                    <form:option value="-1" label="--Chọn nhân Viên"/>
+                                                    <form:options items="${staffMaps}"/>
+                                                </form:select>
                                             </div>
                                         </div>
-
                                     </div><!-- /.col -->
                                     <!-- ComboBox-->
                                     <div class="row">
                                         <div class="checkbox">
-                                            <label class="pos-rel">
-                                                <input type="checkbox" class="ace" />
-                                                <span class="lbl">Tầng trệt</span>
-                                            </label>
-
-                                            <label class="pos-rel">
-                                                <input type="checkbox" class="ace" />
-                                                <span class="lbl">Nguyên căn</span>
-                                            </label>
-
-                                            <label class="pos-rel">
-                                                <input type="checkbox" class="ace" />
-                                                <span class="lbl">Nội thất</span>
-                                            </label>
+                                            <c:forEach var="item" items="${buildingTypes}">
+                                                <label class="pos-rel">
+                                                    <input type="checkbox" class="ace" />
+                                                    <span class="lbl">${item.value}</span>
+                                                </label>
+                                            </c:forEach>
                                         </div>
                                     </div>
                                     <div class="row" style="margin-top:30px ">
@@ -208,7 +198,6 @@
                                             <button type="button" class="btn btn-primary" id="btnSearch">Tìm Kiếm</button>
                                         </div>
                                     </div>
-
                                 </div>
                             </form:form>
 
@@ -242,6 +231,7 @@
                                 </label>
                             </th>
                             <th>Tên sản phẩm</th>
+                            <th>Số Tầng Hầm</th>
                             <th>Địa chỉ</th>
                             <th>Tên quản lý</th>
                             <th>DT.Sàn</th>
@@ -252,65 +242,28 @@
                         </thead>
 
                         <tbody>
-                        <tr>
-                            <th class="center">
-                                <label class="pos-rel">
-                                    <input type="checkbox" class="ace" id="checkbox_building1" />
-                                    <span class="lbl"></span>
-                                </label>
-                            </th>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>
-                                <button class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Giao tòa nhà" onclick = "assignmentBuilding(1)">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="center">
-                                <label class="pos-rel">
-                                    <input type="checkbox" class="ace"  id="checkbox_building2"/>
-                                    <span class="lbl"></span>
-                                </label>
-                            </th>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>
-                                <button class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Giao tòa nhà" onclick = "assignmentBuilding(2)">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="center">
-                                <label class="pos-rel">
-                                    <input type="checkbox" class="ace"  id="checkbox_building3"/>
-                                    <span class="lbl"></span>
-                                </label>
-                            </th>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>Abc</td>
-                            <td>
-                                <button class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Giao tòa nhà" onclick = "assignmentBuilding(3)">
-                                    <i class="fa fa-bars" aria-hidden="true"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        <c:forEach var="item" items="${buildings}">
+                            <tr>
+                                <td class="center">
+                                    <label class="pos-rel">
+                                        <input type="checkbox" class="ace" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+                                <td>${item.name}</td>
+                                <td>${item.numberOfBasement}</td>
+                                <td>${item.address}</td>
+                                <td>${item.managerName}</td>
+                                <td>${item.floorArea}</td>
+                                <td>${item.rentPrice}</td>
+                                <td>${item.serviceFee}</td>
+                                <td>
+                                    <button class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Giao tòa nhà" onclick = "assignmentBuilding(1)">
+                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
@@ -337,18 +290,12 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <c:forEach var="item" items="${staffMaps}">
                         <tr>
                             <td><input type="checkbox" id="checkbox_2" value="2" checked></td>
-                            <td>Nguyễn Văn B</td>
+                            <td>${item.value}</td>
                         </tr>
-                        <tr>
-                            <td><input type="checkbox" id="checkbox_3" value="3" ></td>
-                            <td>Nguyễn Văn C</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" id="checkbox_4" value="4" ></td>
-                            <td>Nguyễn Văn D</td>
-                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
                 <input type="hidden" id="buildingId" name="buildingId" value="">
@@ -424,6 +371,10 @@
                 }
             });
         }
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();   //ngăn truy xuất vào link k mong muốn
+            $('#listForm').submit();
+        });
 
     </script>
 </body>

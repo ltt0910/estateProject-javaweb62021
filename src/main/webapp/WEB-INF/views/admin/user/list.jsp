@@ -65,7 +65,7 @@
                                             <a href="#" data-action="collapse">
                                                 <i class="ace-icon fa fa-chevron-up"></i>
                                             </a>
-                                        </div>
+                                        </div>c
                                     </div>
                                     <div class="widget-body">
                                         <div class="widget-main">

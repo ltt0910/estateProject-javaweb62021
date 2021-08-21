@@ -3009,7 +3009,7 @@
    *
    * @static
    * @type {Array}
-   * @enum {String}
+   * @com.laptrinhjavaweb.enum {String}
    * @readonly
    * @method placements
    * @memberof Popper

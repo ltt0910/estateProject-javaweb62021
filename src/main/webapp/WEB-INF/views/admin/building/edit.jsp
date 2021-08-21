@@ -1,5 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/common/taglib.jsp"%>
+<c:url var="buildingAPI" value="/api/building"/>
 <html>
 <head>
     <title>Thêm Tòa nhà</title>
@@ -35,14 +37,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for = "district">Quận</label>
+                        <label class="col-sm-3 control-label no-padding-right">Quận</label>
                         <div class="col-sm-3">
-                            <select class="form-control" id="district">
-                                <option value=""   name="district">--Chọn quận--</option>
-                                <option value="Q1" name="district">Quận 1</option>
-                                <option value="Q2" name="district">Quận 2</option>
-                                <option value="Q4" name="district">Quận 4</option>
-                            </select>
+                            <form:select path="district" cssClass="form-control">
+                                <form:option value="-1" label="--Quận--"/>
+                                <form:options items="${district}"/>
+                            </form:select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -195,10 +195,15 @@
                     <!-- checkbox -->
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">Loại tòa nhà</label>
-                            <div class="col-sm-9">
-                                <label class="checkbox-inline"><input type="checkbox" value="tang-tret" name="buildingTypes" >Tầng trệt</label>
-                                <label class="checkbox-inline"><input type="checkbox" value="nguyen-can" name="buildingTypes">Nguyên căn</label>
-                                <label class="checkbox-inline"><input type="checkbox" value="noi-that" name="buildingTypes">Nột thất</label>
+                            <div >
+                                <div class="checkbox">
+                                    <c:forEach var="item" items="${buildingTypes}">
+                                        <label class="pos-rel">
+                                            <input type="checkbox" class="ace" />
+                                            <span class="lbl">${item.value}</span>
+                                        </label>
+                                    </c:forEach>
+                                </div>
                             </div>
                         </div>
 
@@ -213,18 +218,15 @@
 
     <%--<script !src=""></script>--%>
     <script>
-        $('#btnAddBuilding').click(function () {
+        $('#btnAddBuilding').click(function (e) {
+            e.preventDefault();
             var data = {};
             var formData = $('#formEdit').serializeArray();
-            data['name'] = 'abc';
-            data['numberOfBasement'] = 100;
-            var buildingTypes = [];
-            buildingTypes.push('tang-tret');
-            buildingTypes.push('nguye-can');
-            buildingTypes.push('noi-that');
-            data["buildingTypes"] = buildingTypes;
+            $.each(formData,function (inddex, v) {
+                    data[""+v.name+""]=v.value;
+            });
             $.ajax({
-                url: "http://localhost:8080/api/building",
+                url: "/api/building",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/json',
