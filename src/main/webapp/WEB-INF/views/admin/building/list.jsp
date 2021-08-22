@@ -60,7 +60,7 @@
                                         <div class="col-sm-6">
                                             <div>
                                                 <label for = "buildingArea">Diện tích sàn</label>
-                                                <input type = "number" id = "buildingArea" class = "form-control" />
+                                                <input type = "number" id = "buildingArea" class = "form-control" name="floorArea" value="${modelSearch.floorArea}" />
                                             </div>
                                         </div>
 
@@ -101,21 +101,21 @@
                                         <div class="col-sm-4">
                                             <div>
                                                 <label for = "numberOfBasement">Số tầng hầm</label>
-                                                <input type = "number" id ="numberOfBasement" class = "form-control" name="numberOfBasement" />
+                                                <input type = "number" id ="numberOfBasement" class = "form-control" name="numberOfBasement" value="${modelSearch.numberOfBasement}" />
                                             </div>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <div>
-                                                <label for = "derection">Hướng</label>
-                                                <input type = "text" id = "derection" class = "form-control" />
+                                                <label for = "direction">Hướng</label>
+                                                <form:input path="direction" cssClass="form-control"></form:input>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <div>
                                                 <label for = "level">Hạng</label>
-                                                <input type = "text" id = "level" class = "form-control" />
+                                                <form:input path="level" cssClass="form-control"></form:input>
                                             </div>
                                         </div>
 
@@ -127,28 +127,28 @@
                                         <div class="col-sm-3">
                                             <div>
                                                 <label for = "areaStart">Diện tích từ</label>
-                                                <input type = "number" id ="areaStart" class = "form-control" />
+                                                <input type = "number" id ="areaStart" class = "form-control" name="areaRentFrom" value="${modelSearch.areaRentFrom}" />
                                             </div>
                                         </div>
 
                                         <div class="col-sm-3">
                                             <div>
                                                 <label for = "areaEnd">Diện tích đến</label>
-                                                <input type = "number" id = "areaEnd" class = "form-control" />
+                                                <input type = "number" id = "areaEnd" class = "form-control"  name="areaRentTo" value="${modelSearch.areaRentTo}"/>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-3">
                                             <div>
                                                 <label for = "rentPriceStart">Giá thuê từ</label>
-                                                <input type = "decimal" id = "rentPriceStart" class = "form-control" />
+                                                <input type = "decimal" id = "rentPriceStart" class = "form-control" name="costRentFrom" value="${modelSearch.costRentFrom}"/>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-3">
                                             <div>
                                                 <label for = "rentPriceEnd">Giá thuê đến</label>
-                                                <input type = "decimal" id = "rentPriceEnd" class = "form-control" />
+                                                <input type = "decimal" id = "rentPriceEnd" class = "form-control" name="costRentTo" value="${modelSearch.costRentTo}" />
                                             </div>
                                         </div>
 
@@ -156,18 +156,17 @@
                                     </div><!-- /.col -->
 
                                     <div class="form-group">
-                                        <!-- PAGE CONTENT BEGINS -->
                                         <div class="col-sm-4">
                                             <div>
-                                                <label for = "nameManager">Tên quản lý</label>
-                                                <input type = "text" id ="nameManager" class = "form-control" />
+                                                <label for = "managerName">Tên quản lý</label>
+                                                <form:input path="managerName" cssClass="form-control"></form:input>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <div>
-                                                <label for = "phoneManager">Điện Thoại quản lý</label>
-                                                <input type = "text" id = "phoneManager" class = "form-control" />
+                                                <label for = "managerPhone">Điện Thoại quản lý</label>
+                                                <form:input path="managerPhone" cssClass="form-control"></form:input>
                                             </div>
                                         </div>
 
@@ -181,7 +180,6 @@
                                             </div>
                                         </div>
                                     </div><!-- /.col -->
-                                    <!-- ComboBox-->
                                     <div class="row">
                                         <div class="checkbox">
                                             <c:forEach var="item" items="${buildingTypes}">
@@ -245,7 +243,7 @@
                             <tr>
                                 <td class="center">
                                     <label class="pos-rel">
-                                        <input type="checkbox" class="ace" />
+                                        <input type="checkbox" class="ace" value="${item.id}" />
                                         <span class="lbl"></span>
                                     </label>
                                 </td>
@@ -257,7 +255,7 @@
                                 <td>${item.rentPrice}</td>
                                 <td>${item.serviceFee}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Giao tòa nhà" onclick = "assignmentBuilding(1)">
+                                    <button class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Giao tòa nhà" onclick = "assignmentBuilding(${item.id})">
                                         <i class="fa fa-bars" aria-hidden="true"></i>
                                     </button>
                                 </td>
@@ -291,7 +289,7 @@
                     <tbody>
                     <c:forEach var="item" items="${staffMaps}">
                         <tr>
-                            <td><input type="checkbox" id="checkbox_2" value="${staffMaps.g}" checked></td>
+                            <td><input type="checkbox" id="checkbox_2" value="${item.key}" checked></td>
                             <td>${item.value}</td>
                         </tr>
                     </c:forEach>
@@ -373,6 +371,7 @@
         }
         $('#btnSearch').click(function (e) {
             e.preventDefault();   //ngăn truy xuất vào link k mong muốn
+            // $('#checkbox').submit();
             $('#listForm').submit();
         });
 

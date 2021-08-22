@@ -3,7 +3,10 @@ package com.laptrinhjavaweb.api.admin;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.service.IBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController(value = "buildingAPIOfAdmin")
 @RequestMapping("/api/building")
@@ -19,6 +22,7 @@ public class BuildingAPI {
 
     }
     @DeleteMapping
-    public void delete(Long Id) {
+    public void deleteBuildingById() {
+
     }
 }

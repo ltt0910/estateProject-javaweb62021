@@ -23,6 +23,52 @@ public class BuildingDTO extends AbstractDTO {
     private String level;
     private String direction;
 
+    public String[] getBuildingTypes() {
+        return buildingTypes;
+    }
+
+    public void setBuildingTypes(String[] buildingTypes) {
+        this.buildingTypes = buildingTypes;
+    }
+
+    private String[] buildingTypes = new String[] {};
+    private Integer costRentFrom;
+    private Integer costRentTo;
+    private Integer areaRentFrom;
+    private Integer areaRentTo;
+
+    public Integer getCostRentFrom() {
+        return costRentFrom;
+    }
+
+    public void setCostRentFrom(Integer costRentFrom) {
+        this.costRentFrom = costRentFrom;
+    }
+
+    public Integer getCostRentTo() {
+        return costRentTo;
+    }
+
+    public void setCostRentTo(Integer costRentTo) {
+        this.costRentTo = costRentTo;
+    }
+
+    public Integer getAreaRentFrom() {
+        return areaRentFrom;
+    }
+
+    public void setAreaRentFrom(Integer areaRentFrom) {
+        this.areaRentFrom = areaRentFrom;
+    }
+
+    public Integer getAreaRentTo() {
+        return areaRentTo;
+    }
+
+    public void setAreaRentTo(Integer areaRentTo) {
+        this.areaRentTo = areaRentTo;
+    }
+
     public String getDistrictCode() {
         return districtCode;
     }

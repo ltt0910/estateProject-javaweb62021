@@ -42,10 +42,10 @@ public class BuildingService implements IBuildingService {
         buildingRepository.save(buildingEntity);
     }
 
-    @Override
-    public void delete(Long id) {
-        buildingRepository.delete(id);
-    }
+//    @Override
+//    public void delete(List<Long> id) {
+//        buildingRepository.deleteAllById(id);
+//    }
 
     @Override
     public Map<String, String> districtName() {
@@ -64,6 +64,5 @@ public class BuildingService implements IBuildingService {
         }
         return result;
     }
-
 
 }
