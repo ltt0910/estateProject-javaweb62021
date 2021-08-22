@@ -15,16 +15,20 @@ public class BuildingDTO  {
     private String brokerageFee;
     private String managerName;
     private String managerPhone;
+    private String structure;
     private String address;
     private Long staffId;
-    private Long districtId;
+    private String districtCode;
+    private String rentArea;
+    private String level;
+    private String direction;
 
-    public Long getDistrictId() {
-        return districtId;
+    public String getDistrictCode() {
+        return districtCode;
     }
 
-    public void setDistrictId(Long districtId) {
-        this.districtId = districtId;
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
     }
 
     public Integer getNumberOfBasement() {
@@ -116,4 +120,37 @@ public class BuildingDTO  {
     public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
+
+    public String getStructure() {
+        return structure;
+    }
+
+    public void setStructure(String structure) {
+        this.structure = structure;
+    }
+
+    public String getRentArea() {
+        return rentArea;
+    }
+
+    public void setRentArea(String rentArea) {
+        this.rentArea = rentArea;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
 }
+

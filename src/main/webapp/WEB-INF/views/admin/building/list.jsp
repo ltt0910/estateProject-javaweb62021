@@ -53,7 +53,6 @@
                                         <div class="col-sm-6">
                                             <div>
                                                 <label for = "name">Tên tòa nhà</label>
-                                                <%--<input type = "text" id = "name" class = "form-control" name="name" value="${modelSearch.name}"/>--%>
                                                 <form:input path="name" cssClass="form-control"></form:input>
                                             </div>
                                         </div>
@@ -73,7 +72,7 @@
                                         <div class="col-sm-4">
                                             <div>
                                                 <label>Quận hiện có</label>
-                                                <form:select path="districtId" cssClass="form-control">
+                                                <form:select path="districtCode" cssClass="form-control">
                                                     <form:option value="-1" label="--Quận"/>
                                                     <form:options items="${district}"/>
                                                 </form:select>
@@ -257,6 +256,7 @@
                                 <td>${item.floorArea}</td>
                                 <td>${item.rentPrice}</td>
                                 <td>${item.serviceFee}</td>
+
                                 <td>
                                     <button class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Giao tòa nhà" onclick = "assignmentBuilding(1)">
                                         <i class="fa fa-bars" aria-hidden="true"></i>

@@ -22,6 +22,16 @@ public class BuildingEntity extends BaseEntity {
     private Integer floorArea;
     @Column(name = "direction")
     private String direction;
+    @Column(name="district_code")
+    private String districtCode;
+    @Column(name = "managerName")
+    private String managerName;
+    @Column(name = "rentPrice")
+    private Integer rentPrice;
+    @Column(name = "serviceFee")
+    private String serviceFee;
+    @Column(name = "managerPhone")
+    private String managerPhone;
 
     public String getName() {
         return name;
@@ -79,4 +89,43 @@ public class BuildingEntity extends BaseEntity {
         this.direction = direction;
     }
 
+    public String getDistrictCode() {
+        return districtCode;
+    }
+
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+
+    public String getManagerPhone() {
+        return managerPhone;
+    }
+
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone;
+    }
+
+    public Integer getRentPrice() {
+        return rentPrice;
+    }
+
+    public void setRentPrice(Integer rentPrice) {
+        this.rentPrice = rentPrice;
+    }
+
+    public String getServiceFee() {
+        return serviceFee;
+    }
+
+    public void setServiceFee(String serviceFee) {
+        this.serviceFee = serviceFee;
+    }
 }

@@ -23,13 +23,13 @@ public class BuildingService implements IBuildingService {
     private BuildingConverter buildingConverter;
     @Autowired
     private BuildingRepository buildingRepository;
-
     @Override
     public List<BuildingDTO> findAll() {
         List<BuildingEntity> entities = buildingRepository.findAll();
         List<BuildingDTO> result = new ArrayList<>();
         for(BuildingEntity buildingEntity :entities){
             BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingEntity);
+            buildingDTO.setAddress(buildingEntity.getStreet()+"-"+buildingEntity.getWard()+"-"+DistrictsEnum.existDistrict(buildingEntity.getDistrictCode()));
             result.add(buildingDTO);
         }
         return result;

@@ -15,4 +15,12 @@ public enum DistrictsEnum {
     public String getDistrictValue() {
         return districtValue;
     }
+  public static String existDistrict(String districtCode){
+      for (DistrictsEnum item:DistrictsEnum.values()) {
+            if(item.toString().equals(districtCode)){
+                return item.getDistrictValue();
+            }
+      }
+      return null;
+  }
 }
