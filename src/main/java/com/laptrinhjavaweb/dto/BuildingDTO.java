@@ -2,7 +2,7 @@ package com.laptrinhjavaweb.dto;
 
 import java.util.Date;
 
-public class BuildingDTO  {
+public class BuildingDTO extends AbstractDTO {
 
     private Date createdDate;
     private String name;

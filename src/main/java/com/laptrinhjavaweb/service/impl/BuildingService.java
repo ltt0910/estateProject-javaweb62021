@@ -43,6 +43,11 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
+    public void delete(Long id) {
+        buildingRepository.delete(id);
+    }
+
+    @Override
     public Map<String, String> districtName() {
         Map<String,String> result = new HashMap<>();
         for (DistrictsEnum item:DistrictsEnum.values()){

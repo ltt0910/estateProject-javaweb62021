@@ -256,7 +256,6 @@
                                 <td>${item.floorArea}</td>
                                 <td>${item.rentPrice}</td>
                                 <td>${item.serviceFee}</td>
-
                                 <td>
                                     <button class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Giao tòa nhà" onclick = "assignmentBuilding(1)">
                                         <i class="fa fa-bars" aria-hidden="true"></i>
@@ -292,7 +291,7 @@
                     <tbody>
                     <c:forEach var="item" items="${staffMaps}">
                         <tr>
-                            <td><input type="checkbox" id="checkbox_2" value="2" checked></td>
+                            <td><input type="checkbox" id="checkbox_2" value="${staffMaps.g}" checked></td>
                             <td>${item.value}</td>
                         </tr>
                     </c:forEach>
@@ -347,14 +346,15 @@
             });
         }
         $('#btnDeleteBuilding').click(function (e) {
-           e.preventDefault();
-           var data={};
+            e.preventDefault();
+            var data={};
             var buildingIds =  $('#buildingList').find('tbody input[type = checkbox]:checked').map(function () {
                 return $(this).val();
             }).get();
             data['buildingIds'] = buildingIds;
             deleteBuilding(data);
         });
+
         function deleteBuilding(data) {
             $.ajax({
                 url: "http://localhost:8080/api/building",
@@ -375,6 +375,7 @@
             e.preventDefault();   //ngăn truy xuất vào link k mong muốn
             $('#listForm').submit();
         });
+
 
     </script>
 </body>
