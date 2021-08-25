@@ -1,12 +1,15 @@
 package com.laptrinhjavaweb.api.admin;
 
 import com.laptrinhjavaweb.dto.BuildingDTO;
+import com.laptrinhjavaweb.dto.reponse.BuildingReponseDTO;
+import com.laptrinhjavaweb.dto.reponse.ReponseDTO;
+import com.laptrinhjavaweb.dto.reponse.StaffReponseDTO;
 import com.laptrinhjavaweb.service.IBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController(value = "buildingAPIOfAdmin")
 @RequestMapping("/api/building")
@@ -22,7 +25,33 @@ public class BuildingAPI {
 
     }
     @DeleteMapping
-    public void deleteBuildingById() {
+    public void deleteBuildingById(@RequestBody long[] ids) {
+        for (long item:ids){
+            buildingService.delete(item);
+        }
+    }
+    @GetMapping("/{buildingid}/staffs")
+    public ReponseDTO loadStaff() {
+        ReponseDTO result = new ReponseDTO();
+        List<StaffReponseDTO> staffs = new ArrayList<>();
+        StaffReponseDTO staffReponseDTO1 = new StaffReponseDTO();
+        staffReponseDTO1.setId(1L);
+        staffReponseDTO1.setFullname("nguyen van b");
+        staffReponseDTO1.setChecked("checked");
+        staffs.add(staffReponseDTO1);
+        StaffReponseDTO staffReponseDTO2 = new StaffReponseDTO();
+        staffReponseDTO2.setId(2L);
+        staffReponseDTO2.setFullname("nguyen van c");
+        staffReponseDTO2.setChecked("checked");
+        staffs.add(staffReponseDTO2);
+        StaffReponseDTO staffReponseDTO3 = new StaffReponseDTO();
+        staffReponseDTO3.setId(3L);
+        staffReponseDTO3.setFullname("nguyen van d");
+        staffReponseDTO3.setChecked("");
+        staffs.add(staffReponseDTO3);
+        result.setMessage("success");
+        result.setData(staffs);
+        return result;
 
     }
 }

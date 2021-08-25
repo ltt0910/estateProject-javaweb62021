@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.controller.admin;
 
 import com.laptrinhjavaweb.dto.BuildingDTO;
+import com.laptrinhjavaweb.dto.request.RequestDTO;
 import com.laptrinhjavaweb.enumm.BuildingTypesEnum;
 import com.laptrinhjavaweb.enumm.DistrictsEnum;
 import com.laptrinhjavaweb.service.IBuildingService;
@@ -25,9 +26,9 @@ public class BuildingController {
     private IUserService userService;
 
     @RequestMapping(value = "/admin/building-list", method = RequestMethod.GET)
-    public ModelAndView buildingList(@ModelAttribute("modelSearch") BuildingDTO buildingDTO) {
+    public ModelAndView buildingList(@ModelAttribute("modelSearch") RequestDTO requestDTO) {
         ModelAndView mav = new ModelAndView("admin/building/list");
-        mav.addObject("modelSearch",buildingDTO);
+        mav.addObject("modelSearch",requestDTO);
         mav.addObject("buildings",buildingService.findAll());
         mav.addObject("staffMaps",userService.getStaffMaps());
         mav.addObject("buildingTypes",buildingService.buildingTypes() );

@@ -2,6 +2,7 @@ package com.laptrinhjavaweb.service.impl;
 
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.dto.BuildingDTO;
+import com.laptrinhjavaweb.dto.reponse.BuildingReponseDTO;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.enumm.BuildingTypesEnum;
 import com.laptrinhjavaweb.enumm.DistrictsEnum;
@@ -24,13 +25,13 @@ public class BuildingService implements IBuildingService {
     @Autowired
     private BuildingRepository buildingRepository;
     @Override
-    public List<BuildingDTO> findAll() {
+    public List<BuildingReponseDTO> findAll() {
         List<BuildingEntity> entities = buildingRepository.findAll();
-        List<BuildingDTO> result = new ArrayList<>();
+        List<BuildingReponseDTO> result = new ArrayList<>();
         for(BuildingEntity buildingEntity :entities){
-            BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingEntity);
-            buildingDTO.setAddress(buildingEntity.getStreet()+"-"+buildingEntity.getWard()+"-"+DistrictsEnum.existDistrict(buildingEntity.getDistrictCode()));
-            result.add(buildingDTO);
+            BuildingReponseDTO reponseDTO = buildingConverter.convertToDTO(buildingEntity);
+            reponseDTO.setAddress(buildingEntity.getStreet()+"-"+buildingEntity.getWard()+"-"+DistrictsEnum.existDistrict(buildingEntity.getDistrictCode()));
+            result.add(reponseDTO);
         }
         return result;
     }
@@ -42,10 +43,11 @@ public class BuildingService implements IBuildingService {
         buildingRepository.save(buildingEntity);
     }
 
-//    @Override
-//    public void delete(List<Long> id) {
-//        buildingRepository.deleteAllById(id);
-//    }
+    @Override
+    public void delete(Long id) {
+        buildingRepository.delete(id);
+    }
+
 
     @Override
     public Map<String, String> districtName() {

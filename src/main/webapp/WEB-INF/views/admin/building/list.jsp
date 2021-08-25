@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp"%>
+<c:url var="loadStaffAPI" value="/api/building"/>
 <c:url var="buildingListURL" value="/admin/building-list"/>
 <html>
 <head>
@@ -287,12 +288,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="item" items="${staffMaps}">
-                        <tr>
-                            <td><input type="checkbox" id="checkbox_2" value="${item.key}" checked></td>
-                            <td>${item.value}</td>
-                        </tr>
-                    </c:forEach>
+                    <%--<c:forEach var="item" items="${staffMaps}">--%>
+                        <%--<tr>--%>
+                            <%--<td><input type="checkbox" value="${item.key}" checked></td>--%>
+                            <%--<td>${item.value}</td>--%>
+                        <%--</tr>--%>
+                    <%--</c:forEach>--%>
                     </tbody>
                 </table>
                 <input type="hidden" id="buildingId" name="buildingId" value="">
@@ -309,6 +310,7 @@
     <script>
         function assignmentBuilding(buildingId){
             openModalAssignmentBuilding();
+            loadStaff();
             $('#buildingId').val(buildingId);
             console.log($('#buildingId').val());
         }
@@ -326,7 +328,30 @@
             data['staffs'] = staffList;
             assignStaff(data);
         });
-
+        function loadStaff(){
+            $.ajax({
+                url: "${loadStaffAPI}/1/staffs",
+                type: "GET",
+                dataType: 'json',
+                // contentType: 'application/json',
+                // data: JSON.stringify(data),
+                success: function (res) {
+                    console.log("success");
+                    var row = '';
+                    $.each(res.data,function (index,item) {
+                        row +='<tr>';
+                        row +='<td class="text-center"><input type="checkbox" value="'+item.id+'" id="checkbox_'+item.id+'"'+item.checked+'/></td>';
+                        row +='<td class="text-center">'+item.fullname+'</td> ';
+                        row+='</tr>';
+                    });
+                    $('#staffList tbody').html(row);
+                },
+                error: function (res) {
+                    console.log("failed");
+                    console.log(res);
+                }
+            });
+        }
         function assignStaff(data) {
             $.ajax({
                 url: "http://localhost:8080/api/assigntmentBuilding",
@@ -355,13 +380,14 @@
 
         function deleteBuilding(data) {
             $.ajax({
-                url: "http://localhost:8080/api/building",
+                url: "/api/building",
                 type: "DELETE",
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
+                // dataType: 'json',
+                // contentType: 'application/json',
+                data:JSON.stringify(data),
                 success: function (res) {
                     console.log("success");
+                    window.location.assign("http://localhost:8080/admin/building-list")
                 },
                 error: function (res) {
                     console.log("failed");

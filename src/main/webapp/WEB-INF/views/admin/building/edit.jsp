@@ -217,12 +217,12 @@
     <%--<script !src=""></script>--%>
     <script>
         $('#btnAddBuilding').click(function (e) {
-            e.preventDefault();
-            var data = {};
-            var formData = $('#formEdit').serializeArray();
-            $.each(formData,function (inddex, v) {
+                e.preventDefault();
+                var data = {};
+                var formData = $('#formEdit').serializeArray();
+                $.each(formData,function (inddex, v) {
                     data[""+v.name+""]=v.value;
-            });
+                });
             $.ajax({
                 url: "${buildingAPI}",
                 type: "POST",
@@ -231,10 +231,12 @@
                 data: JSON.stringify(data),
                 success: function (res) {
                     console.log("success");
+                    window.location.assign("http://localhost:8080/admin/building-list");
                 },
                 error: function (res) {
                     console.log("failed");
                     console.log(res);
+                    window.location.href = "<c:url value='/admin/user-edit-"+res.id+"?message=reset_password_success'/>";
                 }
             });
         });
