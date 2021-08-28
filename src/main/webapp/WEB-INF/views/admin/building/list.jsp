@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="for" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp"%>
 <c:url var="loadStaffAPI" value="/api/building"/>
@@ -181,15 +182,14 @@
                                             </div>
                                         </div>
                                     </div><!-- /.col -->
-                                    <div class="row">
-                                        <div class="checkbox">
-                                            <c:forEach var="item" items="${buildingTypes}">
-                                                <label class="pos-rel">
-                                                    <input type="checkbox" class="ace" />
-                                                    <span class="lbl">${item.value}</span>
-                                                </label>
-                                            </c:forEach>
-                                        </div>
+                                    <div class="col-sm-4">
+                                            <%--<c:forEach var="item" items="${buildingTypes}" >--%>
+                                                <%--<label class="pos-rel">--%>
+                                                    <%--<input type="checkbox" class="ace" name="types" value="types"/>--%>
+                                                    <%--<span class="lbl">${item.value}</span>--%>
+                                                <%--</label>--%>
+                                            <%--</c:forEach>--%>
+                                                <form:checkboxes path="types" items="${buildingTypes}"></form:checkboxes>
                                     </div>
                                     <div class="row" style="margin-top:30px ">
                                         <div class="col-sm-12">
@@ -380,14 +380,14 @@
 
         function deleteBuilding(data) {
             $.ajax({
-                url: "/api/building",
+                url: "${loadStaffAPI}",
                 type: "DELETE",
-                // dataType: 'json',
-                // contentType: 'application/json',
+                dataType: 'json',
+                contentType: 'application/json',
                 data:JSON.stringify(data),
                 success: function (res) {
                     console.log("success");
-                    window.location.assign("http://localhost:8080/admin/building-list")
+                    // window.location.assign("http://localhost:8080/admin/building-list")
                 },
                 error: function (res) {
                     console.log("failed");

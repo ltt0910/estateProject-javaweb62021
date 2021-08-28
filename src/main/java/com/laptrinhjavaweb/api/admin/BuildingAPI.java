@@ -25,10 +25,11 @@ public class BuildingAPI {
 
     }
     @DeleteMapping
-    public void deleteBuildingById(@RequestBody long[] ids) {
+    public BuildingDTO deleteBuildingById(@RequestBody long[] ids) {
         for (long item:ids){
             buildingService.delete(item);
         }
+        return new BuildingDTO();
     }
     @GetMapping("/{buildingid}/staffs")
     public ReponseDTO loadStaff() {
