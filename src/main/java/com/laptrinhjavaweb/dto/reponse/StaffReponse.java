@@ -1,8 +1,8 @@
 package com.laptrinhjavaweb.dto.reponse;
 
-public class StaffReponseDTO {
+public class StaffReponse {
     private Long id;
-    private String Fullname;
+    private String fullName;
     private String checked;
 
     public Long getId() {
@@ -13,12 +13,12 @@ public class StaffReponseDTO {
         this.id = id;
     }
 
-    public String getFullname() {
-        return Fullname;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFullname(String fullname) {
-        Fullname = fullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getChecked() {

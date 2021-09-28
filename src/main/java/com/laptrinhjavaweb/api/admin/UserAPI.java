@@ -3,12 +3,16 @@ package com.laptrinhjavaweb.api.admin;
 import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.dto.PasswordDTO;
 import com.laptrinhjavaweb.dto.UserDTO;
+import com.laptrinhjavaweb.dto.reponse.StaffReponse;
 import com.laptrinhjavaweb.exception.MyException;
 import com.laptrinhjavaweb.service.IUserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -56,5 +60,11 @@ public class UserAPI {
             userService.delete(idList);
         }
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/{id}/staffs")
+    List<StaffReponse> getStaff(@PathVariable(required = false) Long id){
+        List<StaffReponse> result = new ArrayList<>();
+        result = userService.getStaffs(id);
+        return result;
     }
 }

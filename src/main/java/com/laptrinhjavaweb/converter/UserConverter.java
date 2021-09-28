@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.converter;
 
 import com.laptrinhjavaweb.dto.UserDTO;
+import com.laptrinhjavaweb.dto.reponse.StaffReponse;
 import com.laptrinhjavaweb.entity.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ public class UserConverter {
 
     public UserEntity convertToEntity (UserDTO dto){
         UserEntity result = modelMapper.map(dto, UserEntity.class);
+        return result;
+    }
+    public StaffReponse convertToStaffReponse(UserEntity entity){
+        StaffReponse result = modelMapper.map(entity, StaffReponse.class);
         return result;
     }
 }

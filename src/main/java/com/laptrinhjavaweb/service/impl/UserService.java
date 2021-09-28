@@ -4,6 +4,7 @@ import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.dto.PasswordDTO;
 import com.laptrinhjavaweb.dto.UserDTO;
+import com.laptrinhjavaweb.dto.reponse.StaffReponse;
 import com.laptrinhjavaweb.entity.RoleEntity;
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.exception.MyException;
@@ -66,7 +67,7 @@ public class UserService implements IUserService {
     @Override
     public Map<Long, String> getStaffMaps() {
         Map<Long,String> result = new HashMap<>();
-        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1,"USER");
+        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1,"staff");
         for(UserEntity item: staffs){
             result.put(item.getId(),item.getFullName());
         }
@@ -163,5 +164,19 @@ public class UserService implements IUserService {
             userEntity.setStatus(0);
             userRepository.save(userEntity);
         }
+    }
+
+    @Override
+    public List<StaffReponse> getStaffs(Long buildingId) {
+        List<StaffReponse> result = new ArrayList<>();
+        List<UserEntity> userEntities = userRepository.getStaffs(buildingId);
+        for(UserEntity item:userEntities){
+            StaffReponse staffReponse = userConverter.convertToStaffReponse(item);
+             if(userRepository.setChecked(buildingId,item.getId())){
+                 staffReponse.setChecked("checked");
+             }
+            result.add(staffReponse);
+        }
+        return result;
     }
 }

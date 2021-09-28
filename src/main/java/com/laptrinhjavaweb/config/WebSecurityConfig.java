@@ -44,8 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
                 http.csrf().disable()
                 .authorizeRequests()
-                        .antMatchers("/admin/**").hasRole("ADMIN")
-                        .antMatchers("/login", "/resource/**", "/trang-chu", "/api/**").permitAll()
+                        .antMatchers("/admin/building-list").authenticated()
+                        .antMatchers("/admin/building-edit").hasRole("manager")
+                        .antMatchers("/admin/building-edit-**").authenticated()
+                        .antMatchers("/login", "/resource/**", "/api/**").permitAll()
                 .and()
                 .formLogin().loginPage("/login").usernameParameter("j_username").passwordParameter("j_password").permitAll()
                 .loginProcessingUrl("/j_spring_security_check")

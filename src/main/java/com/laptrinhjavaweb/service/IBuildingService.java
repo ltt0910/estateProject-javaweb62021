@@ -1,15 +1,17 @@
 package com.laptrinhjavaweb.service;
 
 import com.laptrinhjavaweb.dto.BuildingDTO;
-import com.laptrinhjavaweb.dto.reponse.BuildingReponseDTO;
+import com.laptrinhjavaweb.dto.reponse.StaffReponse;
 
 import java.util.List;
 import java.util.Map;
 
 public interface IBuildingService {
-    List<BuildingReponseDTO> findAll();
+    List<BuildingDTO> searchBuilding(Map<String,Object> params,String[] types);
     void save(BuildingDTO buildingDTO);
-    void delete(Long ids);
     Map<String,String> districtName();
     Map<String,String> buildingTypes();
+    void delete(Long id);
+    BuildingDTO findById(Long id);
+    List<StaffReponse> getStaff(Long id);
 }

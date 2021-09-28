@@ -3,7 +3,6 @@ package com.laptrinhjavaweb.dto;
 import java.util.Date;
 
 public class BuildingDTO extends AbstractDTO {
-
     private Date createdDate;
     private String name;
     private String ward;
@@ -22,7 +21,7 @@ public class BuildingDTO extends AbstractDTO {
     private String rentArea;
     private String level;
     private String direction;
-
+    private String[] buildingTypes = new String[] {};
     public String[] getBuildingTypes() {
         return buildingTypes;
     }
@@ -30,8 +29,6 @@ public class BuildingDTO extends AbstractDTO {
     public void setBuildingTypes(String[] buildingTypes) {
         this.buildingTypes = buildingTypes;
     }
-
-    private String[] buildingTypes = new String[] {};
     private Integer costRentFrom;
     private Integer costRentTo;
     private Integer areaRentFrom;

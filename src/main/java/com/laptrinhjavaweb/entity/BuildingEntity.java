@@ -1,8 +1,11 @@
 package com.laptrinhjavaweb.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.sun.deploy.security.ValidationState;
+import org.springframework.context.annotation.Lazy;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="building")
@@ -14,27 +17,64 @@ public class BuildingEntity extends BaseEntity {
     private String street;
     @Column(name = "ward")
     private String ward;
+    @Column(name = "district")
+    private String district;
     @Column(name = "structure")
     private String structure;
-    @Column(name = "numberOfBasement")
-    private Integer numberOfBasement;
-    @Column(name = "floorArea")
+    @Column(name = "numberofbasement")
+    private Integer numberofbasement;
+    @Column(name = "floorarea")
     private Integer floorArea;
     @Column(name = "direction")
     private String direction;
-    @Column(name="district_code")
-    private String districtCode;
+    @Column(name = "level")
+    private String level;
+    @Column(name = "rentprice")
+    private Integer rentPrice;
+    @Column(name = "servicefee")
+    private String serviceFee;
+    @Column(name = "carfee")
+    private String carFee;
+    @Column(name = "motofee")
+    private String motoFee;
+    @Column(name = "overtimefee")
+    private String overtimeFee;
+    @Column(name = "waterfee")
+    private String waterFee;
+    @Column(name = "deposit")
+    private String deposit;
+    @Column(name = "payment")
+    private String payment;
     @Column(name = "managerName")
     private String managerName;
-    @Column(name = "rentPrice")
-    private Integer rentPrice;
-    @Column(name = "serviceFee")
-    private String serviceFee;
     @Column(name = "managerPhone")
     private String managerPhone;
+    @Column(name = "type")
+    private String types;
 
+    @OneToMany(mappedBy = "building",fetch = FetchType.LAZY)
+    private List<RentAreaEntity> rentAreaEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "building",fetch = FetchType.LAZY)
+    private List<AssignmentBuildingEntity> assignmentBuildingEntityList = new ArrayList<>();
     public String getName() {
         return name;
+    }
+
+    public Integer getNumberofbasement() {
+        return numberofbasement;
+    }
+
+    public void setNumberofbasement(Integer numberofbasement) {
+        this.numberofbasement = numberofbasement;
+    }
+
+    public String getTypes() {
+        return types;
+    }
+
+    public void setTypes(String types) {
+        this.types = types;
     }
 
     public void setName(String name) {
@@ -66,11 +106,11 @@ public class BuildingEntity extends BaseEntity {
     }
 
     public Integer getNumberOfBasement() {
-        return numberOfBasement;
+        return numberofbasement;
     }
 
-    public void setNumberOfBasement(Integer numberOfBasement) {
-        this.numberOfBasement = numberOfBasement;
+    public void setNumberOfBasement(Integer numberofbasement) {
+        this.numberofbasement = numberofbasement;
     }
 
     public Integer getFloorArea() {
@@ -89,12 +129,68 @@ public class BuildingEntity extends BaseEntity {
         this.direction = direction;
     }
 
-    public String getDistrictCode() {
-        return districtCode;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setDistrictCode(String districtCode) {
-        this.districtCode = districtCode;
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getCarFee() {
+        return carFee;
+    }
+
+    public void setCarFee(String carFee) {
+        this.carFee = carFee;
+    }
+
+    public String getMotoFee() {
+        return motoFee;
+    }
+
+    public void setMotoFee(String motoFee) {
+        this.motoFee = motoFee;
+    }
+
+    public String getOvertimeFee() {
+        return overtimeFee;
+    }
+
+    public void setOvertimeFee(String overtimeFee) {
+        this.overtimeFee = overtimeFee;
+    }
+
+    public String getWaterFee() {
+        return waterFee;
+    }
+
+    public void setWaterFee(String waterFee) {
+        this.waterFee = waterFee;
+    }
+
+    public String getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(String deposit) {
+        this.deposit = deposit;
+    }
+
+    public String getPayment() {
+        return payment;
+    }
+
+    public void setPayment(String payment) {
+        this.payment = payment;
     }
 
     public String getManagerName() {
@@ -127,5 +223,21 @@ public class BuildingEntity extends BaseEntity {
 
     public void setServiceFee(String serviceFee) {
         this.serviceFee = serviceFee;
+    }
+
+    public List<RentAreaEntity> getRentAreaEntityList() {
+        return rentAreaEntityList;
+    }
+
+    public void setRentAreaEntityList(List<RentAreaEntity> rentAreaEntityList) {
+        this.rentAreaEntityList = rentAreaEntityList;
+    }
+
+    public List<AssignmentBuildingEntity> getAssignmentBuildingEntityList() {
+        return assignmentBuildingEntityList;
+    }
+
+    public void setAssignmentBuildingEntityList(List<AssignmentBuildingEntity> assignmentBuildingEntityList) {
+        this.assignmentBuildingEntityList = assignmentBuildingEntityList;
     }
 }

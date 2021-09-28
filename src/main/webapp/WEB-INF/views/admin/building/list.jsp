@@ -1,8 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="for" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="loadStaffAPI" value="/api/building"/>
 <c:url var="buildingListURL" value="/admin/building-list"/>
 <html>
 <head>
@@ -75,8 +73,8 @@
                                             <div>
                                                 <label>Quận hiện có</label>
                                                 <form:select path="districtCode" cssClass="form-control">
-                                                    <form:option value="-1" label="--Quận"/>
-                                                    <form:options items="${district}"/>
+                                                    <form:option value="" label="--Quận"/>
+                                                    <form:options items="${districtCode}"/>
                                                 </form:select>
                                             </div>
                                         </div>
@@ -171,25 +169,23 @@
                                                 <form:input path="managerPhone" cssClass="form-control"></form:input>
                                             </div>
                                         </div>
-
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label>Nhân Viên Phụ trách</label>
-                                                <form:select path="staffId" cssClass="form-control">
-                                                    <form:option value="-1" label="--Chọn nhân Viên"/>
-                                                    <form:options items="${staffMaps}"/>
-                                                </form:select>
+                                        <security:authorize access="hasRole('manager')">
+                                            <div class="col-sm-4">
+                                                <div>
+                                                    <label>Nhân Viên Phụ trách</label>
+                                                    <form:select path="staffId" cssClass="form-control">
+                                                        <form:option value="" label="--Chọn nhân Viên"/>
+                                                        <c:forEach var="item" items="${staffMaps}">
+                                                              <form:option value="${item.id}" label="${item.fullName}"/>
+                                                        </c:forEach>
+                                                    </form:select>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </security:authorize>
+
                                     </div><!-- /.col -->
                                     <div class="col-sm-4">
-                                            <%--<c:forEach var="item" items="${buildingTypes}" >--%>
-                                                <%--<label class="pos-rel">--%>
-                                                    <%--<input type="checkbox" class="ace" name="types" value="types"/>--%>
-                                                    <%--<span class="lbl">${item.value}</span>--%>
-                                                <%--</label>--%>
-                                            <%--</c:forEach>--%>
-                                                <form:checkboxes path="types" items="${buildingTypes}"></form:checkboxes>
+                                        <form:checkboxes items="${buildingTypes}" path="buildingTypes"></form:checkboxes>
                                     </div>
                                     <div class="row" style="margin-top:30px ">
                                         <div class="col-sm-12">
@@ -290,8 +286,8 @@
                     <tbody>
                     <%--<c:forEach var="item" items="${staffMaps}">--%>
                         <%--<tr>--%>
-                            <%--<td><input type="checkbox" value="${item.key}" checked></td>--%>
-                            <%--<td>${item.value}</td>--%>
+                            <%--<td><input type="checkbox" value="${item.id}" ${item.checked} ></td>--%>
+                                <%--<td>${item.fullName}</td>--%>
                         <%--</tr>--%>
                     <%--</c:forEach>--%>
                     </tbody>
@@ -309,10 +305,11 @@
 <script src="assets/js/jquery.2.1.1.min.js"></script>
     <script>
         function assignmentBuilding(buildingId){
-            openModalAssignmentBuilding();
-            loadStaff();
             $('#buildingId').val(buildingId);
+            openModalAssignmentBuilding();
             console.log($('#buildingId').val());
+            loadStaff(buildingId);
+
         }
 
         function openModalAssignmentBuilding(){
@@ -327,31 +324,10 @@
             }).get();
             data['staffs'] = staffList;
             assignStaff(data);
+            window.location.assign('http://localhost:8080/admin/building-list');
+
         });
-        function loadStaff(){
-            $.ajax({
-                url: "${loadStaffAPI}/1/staffs",
-                type: "GET",
-                dataType: 'json',
-                // contentType: 'application/json',
-                // data: JSON.stringify(data),
-                success: function (res) {
-                    console.log("success");
-                    var row = '';
-                    $.each(res.data,function (index,item) {
-                        row +='<tr>';
-                        row +='<td class="text-center"><input type="checkbox" value="'+item.id+'" id="checkbox_'+item.id+'"'+item.checked+'/></td>';
-                        row +='<td class="text-center">'+item.fullname+'</td> ';
-                        row+='</tr>';
-                    });
-                    $('#staffList tbody').html(row);
-                },
-                error: function (res) {
-                    console.log("failed");
-                    console.log(res);
-                }
-            });
-        }
+
         function assignStaff(data) {
             $.ajax({
                 url: "http://localhost:8080/api/assigntmentBuilding",
@@ -374,20 +350,26 @@
             var buildingIds =  $('#buildingList').find('tbody input[type = checkbox]:checked').map(function () {
                 return $(this).val();
             }).get();
-            data['buildingIds'] = buildingIds;
+            data = buildingIds;
             deleteBuilding(data);
         });
-
-        function deleteBuilding(data) {
+        function loadStaff(buildingId) {
             $.ajax({
-                url: "${loadStaffAPI}",
-                type: "DELETE",
+                url: 'http://localhost:8080/api/building/'+buildingId+'/staffs',
                 dataType: 'json',
-                contentType: 'application/json',
-                data:JSON.stringify(data),
+                type: "GET",
+                // contentType: 'application/json',
                 success: function (res) {
                     console.log("success");
-                    // window.location.assign("http://localhost:8080/admin/building-list")
+                    var row = '';
+                    $.each(res,function (index,item) {
+                        row+='<tr>';
+                        row+='<td class ="text-center"><input type="checkbox" name="checkList" value='+item.id+' id="checkbox_'+item.id+'" '+item.checked+'/></td>';
+                        row+='<td class ="text-center">'+item.fullName+'</td>';
+                        row+='</tr>';
+                    });
+                    $('#staffList tbody').html(row);
+
                 },
                 error: function (res) {
                     console.log("failed");
@@ -395,11 +377,31 @@
                 }
             });
         }
+
+        function deleteBuilding(data) {
+            $.ajax({
+                url: "http://localhost:8080/api/building",
+                type: "DELETE",
+                // dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (res) {
+                    console.log("success");
+                    window.location.assign('http://localhost:8080/admin/building-list');
+                },
+                error: function (res) {
+                    console.log("failed");
+                    console.log(res);
+                }
+            });
+        }
+
         $('#btnSearch').click(function (e) {
             e.preventDefault();   //ngăn truy xuất vào link k mong muốn
             // $('#checkbox').submit();
             $('#listForm').submit();
         });
+
 
 
     </script>

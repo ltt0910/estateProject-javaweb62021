@@ -1,10 +1,10 @@
-package com.laptrinhjavaweb.enumm;
+package com.laptrinhjavaweb.enums;
 
 public  enum BuildingTypesEnum {
 
-        tang_tret("Tầng trệt"),
-        nguyen_can("Nguyên căn"),
-        noi_that("Nội thất");
+        TANG_TRET("Tầng trệt"),
+        NGUYEN_CAN("Nguyên căn"),
+        NOI_THAT("Nội thất");
 
         private final String buildingTypes;
         BuildingTypesEnum(String buildingTypes) {

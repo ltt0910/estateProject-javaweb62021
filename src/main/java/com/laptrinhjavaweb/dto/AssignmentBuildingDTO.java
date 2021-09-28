@@ -2,9 +2,11 @@ package com.laptrinhjavaweb.dto;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 public class AssignmentBuildingDTO {
     private Long buildingId;
-    private Long[] staffs;
+    private List<Long> staffs;
 
     public Long getBuildingId() {
         return buildingId;
@@ -14,11 +16,11 @@ public class AssignmentBuildingDTO {
         this.buildingId = buildingId;
     }
 
-    public Long[] getStaffs() {
+    public List<Long> getStaffs() {
         return staffs;
     }
 
-    public void setStaffs(Long[] staffs) {
+    public void setStaffs(List<Long> staffs) {
         this.staffs = staffs;
     }
 }

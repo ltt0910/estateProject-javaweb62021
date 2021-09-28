@@ -1,15 +1,15 @@
 package com.laptrinhjavaweb.api.admin;
 
 import com.laptrinhjavaweb.dto.BuildingDTO;
-import com.laptrinhjavaweb.dto.reponse.BuildingReponseDTO;
-import com.laptrinhjavaweb.dto.reponse.ReponseDTO;
-import com.laptrinhjavaweb.dto.reponse.StaffReponseDTO;
+import com.laptrinhjavaweb.dto.reponse.StaffReponse;
 import com.laptrinhjavaweb.service.IBuildingService;
+import com.laptrinhjavaweb.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController(value = "buildingAPIOfAdmin")
 @RequestMapping("/api/building")
@@ -17,42 +17,42 @@ public class BuildingAPI {
 
     @Autowired
     private IBuildingService buildingService;
-
+    @Autowired
+    private IUserService userService;
     @PostMapping
     public BuildingDTO createBuilding(@RequestBody BuildingDTO newBuilding) {
         buildingService.save(newBuilding);
         return newBuilding;
-
     }
+
     @DeleteMapping
-    public BuildingDTO deleteBuildingById(@RequestBody long[] ids) {
-        for (long item:ids){
-            buildingService.delete(item);
+    public void deleteBuildingById(@RequestBody long[] ids) {
+        for(long id:ids){
+            buildingService.delete(id);
         }
-        return new BuildingDTO();
     }
-    @GetMapping("/{buildingid}/staffs")
-    public ReponseDTO loadStaff() {
-        ReponseDTO result = new ReponseDTO();
-        List<StaffReponseDTO> staffs = new ArrayList<>();
-        StaffReponseDTO staffReponseDTO1 = new StaffReponseDTO();
-        staffReponseDTO1.setId(1L);
-        staffReponseDTO1.setFullname("nguyen van b");
-        staffReponseDTO1.setChecked("checked");
-        staffs.add(staffReponseDTO1);
-        StaffReponseDTO staffReponseDTO2 = new StaffReponseDTO();
-        staffReponseDTO2.setId(2L);
-        staffReponseDTO2.setFullname("nguyen van c");
-        staffReponseDTO2.setChecked("checked");
-        staffs.add(staffReponseDTO2);
-        StaffReponseDTO staffReponseDTO3 = new StaffReponseDTO();
-        staffReponseDTO3.setId(3L);
-        staffReponseDTO3.setFullname("nguyen van d");
-        staffReponseDTO3.setChecked("");
-        staffs.add(staffReponseDTO3);
-        result.setMessage("success");
-        result.setData(staffs);
-        return result;
+    @GetMapping("/{id}")
+    public BuildingDTO findById(@PathVariable long id){
+        BuildingDTO buildingDTO = new BuildingDTO();
+        buildingDTO = buildingService.findById(id);
+        return buildingDTO;
+    }
+    @PutMapping("/{id}")
+    public void findById(@RequestBody BuildingDTO editBuilding){
+        buildingService.save(editBuilding);
+    }
 
+    @GetMapping
+    public List<BuildingDTO> findAll(@RequestParam(required = false) Map<String,Object> params
+                                    ,@RequestParam(required = false) String[] types){
+         List<BuildingDTO> result = buildingService.searchBuilding(params,types);
+        return result;
     }
+    @GetMapping("/{id}/staffs")
+    List<StaffReponse> getStaff(@PathVariable Long id){
+        List<StaffReponse> result = new ArrayList<>();
+        result = buildingService.getStaff(id);
+        return result;
+    }
+
 }
