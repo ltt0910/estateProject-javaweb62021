@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class BuildingService implements IBuildingService {
@@ -56,11 +53,8 @@ public class BuildingService implements IBuildingService {
     public void save(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
         String[] buildingTypes = buildingDTO.getBuildingTypes();
-        String types = "";
-
-        for (String item:buildingTypes) {
-            types+= item+",";
-        }
+        String types = Arrays.toString(buildingTypes).replace("[","");
+        types = types.replace("]","");
         buildingEntity.setTypes(types);
         buildingRepository.save(buildingEntity);
     }
