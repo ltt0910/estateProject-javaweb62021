@@ -191,8 +191,9 @@
                             <input type="tel" id="managerPhone" name="managerPhone"  class="col-xs-10 col-sm-12" />
                         </div>
                     </div>
-                    <c:if test="${addBuilding.id == ''}">
-                        <div class="col-sm-4">
+                    <c:if test="${addBuilding.id == null}">
+                        <div class="col-sm-9">
+                            <label class="col-sm-4 control-label no-padding-right" for="buildingTypes">Loại Tòa Nhà</label>
                             <form:checkboxes items="${buildingTypes}" path="buildingTypes"></form:checkboxes>
                         </div>
                     </c:if>

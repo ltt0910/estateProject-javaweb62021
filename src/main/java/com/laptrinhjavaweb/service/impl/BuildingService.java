@@ -61,7 +61,11 @@ public class BuildingService implements IBuildingService {
 
     @Override
     public void delete(Long id) {
-        buildingRepository.delete(id);
+        try{
+            buildingRepository.delete(id);
+        }catch (Exception e){
+
+        }
     }
 
     @Override

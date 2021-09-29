@@ -25,7 +25,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     @Override
     public List<BuildingEntity> searchBuilding(Map<String,Object> params,List<String> buildingTypes) {
         String name = (String) params.get("name");
-        String numberofbasement = (String) params.get("numberofbasement");
+        String numberofbasement = (String) params.get("numberOfBasement");
         StringBuilder sql1 = new StringBuilder("SELECT * ");
         StringBuilder sql2 = new StringBuilder(" FROM building ");
         StringBuilder sql3 = new StringBuilder(" WHERE 1=1");
