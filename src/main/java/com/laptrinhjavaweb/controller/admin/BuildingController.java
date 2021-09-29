@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller(value = "buildingControllerOfAdmin")
@@ -21,11 +23,17 @@ public class BuildingController {
     @RequestMapping(value = "/admin/building-list", method = RequestMethod.GET)
     public ModelAndView buildingList(@ModelAttribute("modelSearch") BuildingDTO buildingDTO,
                                      @RequestParam(required = false) Map<String,Object> params,
-                                     @RequestParam(required = false) String[] types,
+                                     @RequestParam(required = false) String[] types ,
                                      @RequestParam(required = false) Long buildingId) {
         ModelAndView mav = new ModelAndView("admin/building/list");
         mav.addObject("modelSearch",buildingDTO);
-        mav.addObject("buildings",buildingService.searchBuilding(params,types));
+        List<String> buildingTypes = new ArrayList<>();
+        int i = 0;
+        for (String item:buildingDTO.getBuildingTypes()) {
+            buildingTypes.add(item);
+
+        }
+        mav.addObject("buildings",buildingService.searchBuilding(params,buildingTypes));
         mav.addObject("staffMaps",buildingService.getStaff(buildingId));
         mav.addObject("buildingTypes",buildingService.buildingTypes() );
         mav.addObject("districtCode", buildingService.districtName());

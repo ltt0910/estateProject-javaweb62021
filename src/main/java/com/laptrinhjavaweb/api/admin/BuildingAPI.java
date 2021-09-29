@@ -44,8 +44,8 @@ public class BuildingAPI {
 
     @GetMapping
     public List<BuildingDTO> findAll(@RequestParam(required = false) Map<String,Object> params
-                                    ,@RequestParam(required = false) String[] types){
-         List<BuildingDTO> result = buildingService.searchBuilding(params,types);
+                                    ,@RequestParam(required = false) List<String> buildingTypes){
+         List<BuildingDTO> result = buildingService.searchBuilding(params,buildingTypes);
         return result;
     }
     @GetMapping("/{id}/staffs")

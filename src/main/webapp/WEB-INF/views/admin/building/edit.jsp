@@ -191,14 +191,11 @@
                             <input type="tel" id="managerPhone" name="managerPhone"  class="col-xs-10 col-sm-12" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right">Loại tòa nhà</label>
-                        <div >
-                            <div class="col-sm-4">
-                                <form:checkboxes items="${buildingTypes}" path="buildingTypes"></form:checkboxes>
-                            </div>
+                    <c:if test="${addBuilding.id == ''}">
+                        <div class="col-sm-4">
+                            <form:checkboxes items="${buildingTypes}" path="buildingTypes"></form:checkboxes>
                         </div>
-                    </div>
+                    </c:if>
                     <div>
                         <form:hidden path="id" cssClass="col-xs-10 col-sm-12" ></form:hidden>
                     </div>

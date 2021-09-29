@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IBuildingService {
-    List<BuildingDTO> searchBuilding(Map<String,Object> params,String[] types);
+    List<BuildingDTO> searchBuilding(Map<String,Object> params,List<String> buildingTypes);
     void save(BuildingDTO buildingDTO);
     Map<String,String> districtName();
     Map<String,String> buildingTypes();

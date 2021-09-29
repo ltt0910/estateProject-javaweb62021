@@ -23,7 +23,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     private UserRepository userRepository;
 
     @Override
-    public List<BuildingEntity> searchBuilding(Map<String,Object> params,String[] types) {
+    public List<BuildingEntity> searchBuilding(Map<String,Object> params,List<String> buildingTypes) {
         String name = (String) params.get("name");
         String numberofbasement = (String) params.get("numberofbasement");
         StringBuilder sql1 = new StringBuilder("SELECT * ");
@@ -69,18 +69,17 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
             sql3.append(")");
         }
 
-//         String  buildingTypes = (String) params.get("buildingTypes");
-//        if (buildingTypes!=null) {
-//            int i = 0;
-//            sql3.append(" and(");
-//            for (String item : buildingTypes) {
-//                buildingTypes[i] = " building.type like '%" + item + "%'";
-//                i++;
-//            }
-//            String newSql = String.join(" OR ", types);
-//            sql3.append(newSql);
-//            sql3.append(")");
-//        }
+        int i = 0;
+        if(buildingTypes.size()>0){
+            sql3.append(" and(");
+            for (String item : buildingTypes) {
+                buildingTypes.set(i,"building.type like '%"+item+"%'");
+                i++;
+            }
+            String newSql = String.join(" OR ", buildingTypes);
+            sql3.append(newSql);
+            sql3.append(")");
+        }
         if (!StringUtils.isNullOrEmty((String) params.get("staffId"))) {
             sql2.append(" inner join assignmentbuilding as a on a.buildingid = building.id ");
             sql3.append(" and a.staffid = " + params.get("staffId") + "");
@@ -93,7 +92,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     }
 
     @Override
-    public List<BuildingEntity> findBuildingAssignmentByStaff(Map<String,Object> params,String[]types,Long id) {
+    public List<BuildingEntity> findBuildingAssignmentByStaff(Map<String,Object> params,List<String> buildingTypes,Long id) {
 
         Query query = entityManager.createNativeQuery("select * from building as b inner join assignmentbuilding as a on b.id = a.buildingid where a.staffid = "+id+"", BuildingEntity.class);
         List<BuildingEntity> buildingEntities = query.getResultList();

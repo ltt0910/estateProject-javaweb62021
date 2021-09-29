@@ -30,14 +30,14 @@ public class BuildingService implements IBuildingService {
     @Autowired
     private UserRepository userRepository;
     @Override
-    public List<BuildingDTO> searchBuilding(Map<String,Object> params,String[] types) {
+    public List<BuildingDTO> searchBuilding(Map<String,Object> params,List<String> buildingTypes) {
         List<BuildingEntity> entities = new ArrayList<>();
         if(SecurityUtils.getAuthorities().contains("ROLE_staff")){
             Long staffId = SecurityUtils.getPrincipal().getId();
-            entities= buildingRepository.findBuildingAssignmentByStaff(params,types,staffId);
+            entities= buildingRepository.findBuildingAssignmentByStaff(params,buildingTypes,staffId);
         }
         else{
-            entities = buildingRepository.searchBuilding(params,types);
+            entities = buildingRepository.searchBuilding(params,buildingTypes);
         }
         List<BuildingDTO> result = new ArrayList<>();
         for(BuildingEntity buildingEntity :entities){
@@ -84,7 +84,9 @@ public class BuildingService implements IBuildingService {
     public BuildingDTO findById(Long id){
         BuildingDTO buildingDTO = new BuildingDTO();
         BuildingEntity buildingEntity = buildingRepository.findOne(id);
+        String[] buildingTypes = buildingEntity.getTypes().split(",");
         buildingDTO = buildingConverter.convertToDTO(buildingEntity);
+        buildingDTO.setBuildingTypes(buildingTypes);
         return buildingDTO;
     }
 
