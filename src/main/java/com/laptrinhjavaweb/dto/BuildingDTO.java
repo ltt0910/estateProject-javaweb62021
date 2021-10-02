@@ -18,7 +18,7 @@ public class BuildingDTO extends AbstractDTO {
     private String structure;
     private String address;
     private Long staffId;
-    private String districtCode;
+    private String district;
     private String rentArea;
     private String level;
     private String direction;
@@ -67,12 +67,12 @@ public class BuildingDTO extends AbstractDTO {
         this.areaRentTo = areaRentTo;
     }
 
-    public String getDistrictCode() {
-        return districtCode;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setDistrictCode(String districtCode) {
-        this.districtCode = districtCode;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public Integer getNumberOfBasement() {

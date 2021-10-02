@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.service.impl;
 
+import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.dto.BuildingDTO;
@@ -35,14 +36,15 @@ public class BuildingService implements IBuildingService {
     @Autowired
     private RentAreaService rentAreaService;
     @Override
-    public List<BuildingDTO> searchBuilding(Map<String,Object> params,List<String> buildingTypes) {
+    public List<BuildingDTO> searchBuilding(BuildingDTO dto) {
         List<BuildingEntity> entities = new ArrayList<>();
+        BuildingSearchBuilder buildingSearchBuilder = buildingConverter.convertToBuildingSearchBuilder(dto);
         if(SecurityUtils.getAuthorities().contains("ROLE_staff")){
             Long staffId = SecurityUtils.getPrincipal().getId();
-            entities= buildingRepository.findBuildingAssignmentByStaff(params,buildingTypes,staffId);
+//            entities= buildingRepository.findBuildingAssignmentByStaff(params,buildingTypes,staffId);
         }
         else{
-            entities = buildingRepository.searchBuilding(params,buildingTypes);
+            entities = buildingRepository.searchBuilding(buildingSearchBuilder);
         }
 
         List<BuildingDTO> result = new ArrayList<>();
@@ -60,7 +62,13 @@ public class BuildingService implements IBuildingService {
             rentArea = rentArea.replace(" ","");
             BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingEntity);
             buildingDTO.setRentArea(rentArea);
-            buildingDTO.setAddress(buildingEntity.getStreet()+"-"+buildingEntity.getWard()+"-"+DistrictsEnum.existDistrict(buildingEntity.getDistrict()));
+            if(buildingEntity.getDistrict().equals("-1")) {
+                buildingDTO.setAddress(buildingEntity.getStreet()+"-"+buildingEntity.getWard());
+            }
+            else{
+                buildingDTO.setAddress(buildingEntity.getStreet()+"-"+buildingEntity.getWard()+"-"+DistrictsEnum.existDistrict(buildingEntity.getDistrict()));
+            }
+
             result.add(buildingDTO);
         }
         return result;
@@ -108,7 +116,8 @@ public class BuildingService implements IBuildingService {
         try{
             buildingRepository.delete(id);
         }catch (Exception e){
-
+            rentAreaService.deleteRentArea(id);
+            buildingRepository.delete(id);
         }
     }
 
@@ -151,7 +160,7 @@ public class BuildingService implements IBuildingService {
     @Override
     public List<StaffReponse> getStaff(Long buildingId) {
         List<StaffReponse> result = new ArrayList<>();
-        List<UserEntity> userEntities = buildingRepository.getStaffs(buildingId);
+        List<UserEntity> userEntities = buildingRepository.getStaffs();
         for(UserEntity item:userEntities){
             StaffReponse staffReponse = userConverter.convertToStaffReponse(item);
             if(userRepository.setChecked(buildingId,item.getId())){

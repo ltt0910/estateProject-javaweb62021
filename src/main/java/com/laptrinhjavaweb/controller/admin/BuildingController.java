@@ -21,20 +21,16 @@ public class BuildingController {
     private IUserService userService;
 
     @RequestMapping(value = "/admin/building-list", method = RequestMethod.GET)
-    public ModelAndView buildingList(@ModelAttribute("modelSearch") BuildingDTO buildingDTO,
-                                     @RequestParam(required = false) Map<String,Object> params,
-                                     @RequestParam(required = false) String[] types ,
-                                     @RequestParam(required = false) Long buildingId) {
+    public ModelAndView buildingList(@ModelAttribute("modelSearch") BuildingDTO buildingDTO) {
         ModelAndView mav = new ModelAndView("admin/building/list");
         mav.addObject("modelSearch",buildingDTO);
         List<String> buildingTypes = new ArrayList<>();
-        int i = 0;
         for (String item:buildingDTO.getBuildingTypes()) {
             buildingTypes.add(item);
 
         }
-        mav.addObject("buildings",buildingService.searchBuilding(params,buildingTypes));
-        mav.addObject("staffMaps",buildingService.getStaff(buildingId));
+        mav.addObject("buildings",buildingService.searchBuilding(buildingDTO));
+        mav.addObject("staffMaps",buildingService.getStaff(buildingDTO.getId()));
         mav.addObject("buildingTypes",buildingService.buildingTypes() );
         mav.addObject("districtCode", buildingService.districtName());
         return mav;

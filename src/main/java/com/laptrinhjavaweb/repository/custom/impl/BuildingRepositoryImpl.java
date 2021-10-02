@@ -1,15 +1,19 @@
 package com.laptrinhjavaweb.repository.custom.impl;
 
+import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.repository.UserRepository;
 import com.laptrinhjavaweb.repository.custom.BuildingRepositoryCustom;
-import com.laptrinhjavaweb.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -22,67 +26,73 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
-    public List<BuildingEntity> searchBuilding(Map<String,Object> params,List<String> buildingTypes) {
-        String name = (String) params.get("name");
-        String numberofbasement = (String) params.get("numberOfBasement");
-        StringBuilder sql1 = new StringBuilder("SELECT * ");
-        StringBuilder sql2 = new StringBuilder(" FROM building ");
-        StringBuilder sql3 = new StringBuilder(" WHERE 1=1");
-        if (!StringUtils.isNullOrEmty(name)){
-            sql3.append(" AND name LIKE '%"+name+"%'");
+    private void buildingSearchBuilderPart1(BuildingSearchBuilder builder, StringBuilder sql){
+        if (builder.getRentCostFrom()!=null) {
+            sql.append(" and rentprice >= '" + builder.getRentCostFrom()+ "'");
         }
-        if (!StringUtils.isNullOrEmty(numberofbasement)) {
-            sql3.append(" AND numberofbasement = " + numberofbasement + "");
+        if (builder.getRentCostTo()!=null) {
+            sql.append(" and rentprice <= '" + builder.getRentCostTo()+ "'");
         }
-
-        if(!StringUtils.isNullOrEmty((String) params.get("districtCode"))){
-            sql3.append(" AND district like '" + params.get("districtCode") + "'");
-        }
-        if (params.get("costRentFrom")!= null && params.get("costRentFrom")!="") {
-            sql3.append(" and rentprice >= '" + params.get("costRentFrom")+ "'");
-        }
-        if (params.get("costRentTo") != null&& params.get("costRentTo")!="") {
-            sql3.append(" and rentprice <= '" + params.get("costRentTo") + "'");
-        }
-        if (!StringUtils.isNullOrEmty((String) params.get("street"))) {
-            sql3.append(" and street like '%" + params.get("street")  + "%'");
-        }
-        if (!StringUtils.isNullOrEmty((String) params.get("ward"))) {
-            sql3.append(" and ward like '%" + params.get("ward")  + "%'");
-        }
-        if (!StringUtils.isNullOrEmty((String) params.get("managerName"))) {
-            sql3.append(" and manager_name like '%" + params.get("managerName") + "%'");
-        }
-
-        if (!StringUtils.isNullOrEmty((String) params.get("managerPhone"))) {
-            sql3.append(" and manager_phone like '%" + params.get("managerPhone")  + "%'");
-        }
-        if (!StringUtils.isNullOrEmty((String) params.get("areaRentFrom")) || !StringUtils.isNullOrEmty((String) params.get("areaRentTo"))) {
-            sql3.append(" and EXISTS (SELECT rentarea.value FROM rentarea WHERE 1 =1");
-            if (!StringUtils.isNullOrEmty((String) params.get("areaRentFrom"))) {
-                sql3.append(" and rentarea.value >= " + params.get("areaRentFrom") + "");
+        if (builder.getRentAreaFrom()!=null||builder.getRentAreaTo()!=null ) {
+            sql.append(" and EXISTS (SELECT rentarea.value FROM rentarea WHERE 1 =1");
+            if (builder.getRentAreaFrom()!=null) {
+                sql.append(" and rentarea.value >= " + builder.getRentAreaFrom()+ "");
             }
-            if (!StringUtils.isNullOrEmty((String) params.get("areaRentTo"))) {
-                sql3.append(" and rentarea.value <= " + params.get("areaRentTo") + "");
+            if (builder.getRentAreaTo()!=null) {
+                sql.append(" and rentarea.value <= " + builder.getRentAreaTo() + "");
             }
-            sql3.append(")");
+            sql.append(")");
         }
 
         int i = 0;
+        List<String> buildingTypes= new ArrayList<>(Arrays.asList(builder.getBuildingTypes()));
         if(buildingTypes.size()>0){
-            sql3.append(" and(");
+            sql.append(" and(");
             for (String item : buildingTypes) {
                 buildingTypes.set(i,"building.type like '%"+item+"%'");
                 i++;
             }
             String newSql = String.join(" OR ", buildingTypes);
-            sql3.append(newSql);
-            sql3.append(")");
+            sql.append(newSql);
+            sql.append(")");
         }
-        if (!StringUtils.isNullOrEmty((String) params.get("staffId"))) {
+    }
+    private void buildingSearchBuilderPart2(BuildingSearchBuilder builder, StringBuilder sql){
+        try {
+            Field[] fields = BuildingSearchBuilder.class.getDeclaredFields();
+            for (Field field:fields){
+                field.setAccessible(true);
+                String name = field.getName();
+                if((!name.equals("buildingTypes")) && (!name.startsWith("rentArea")) && (!name.startsWith("rentCost"))){
+                    Object objectValue = field.get(builder);
+                    if(objectValue!=null){
+                        if(field.getType().getName().equals("java.lang.String")){
+                            String value  = (String) objectValue;
+                            if(value!=""){
+                                sql.append(" AND "+name.toLowerCase()+" LIKE '%"+value+"%'");
+                            }
+                        }else if(field.getType().getName().equals("java.lang.Integer")){
+                                Integer value = (Integer) objectValue;
+                                sql.append(" AND "+name.toLowerCase()+" = "+value+"");
+
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+
+        }
+    }
+    @Override
+    public List<BuildingEntity> searchBuilding(BuildingSearchBuilder buildingSearchBuilder) {
+        StringBuilder sql1 = new StringBuilder("SELECT * ");
+        StringBuilder sql2 = new StringBuilder(" FROM building ");
+        StringBuilder sql3 = new StringBuilder(" WHERE 1=1");
+        buildingSearchBuilderPart2(buildingSearchBuilder,sql3);
+        buildingSearchBuilderPart1(buildingSearchBuilder,sql3);
+        if (buildingSearchBuilder.getEmployee()!=null) {
             sql2.append(" inner join assignmentbuilding as a on a.buildingid = building.id ");
-            sql3.append(" and a.staffid = " + params.get("staffId") + "");
+            sql3.append(" and a.staffid = " +buildingSearchBuilder.getEmployee() + "");
         }
         sql3.append(" group by building.id");
         String sql = (sql1.toString() + sql2.toString() + sql3.toString());
@@ -90,7 +100,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         List<BuildingEntity> buildingEntities =query.getResultList();
         return buildingEntities;
     }
-
     @Override
     public List<BuildingEntity> findBuildingAssignmentByStaff(Map<String,Object> params,List<String> buildingTypes,Long id) {
 
@@ -105,7 +114,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         return (BuildingEntity) query.getSingleResult();
     }
 
-    public List<UserEntity> getStaffs(Long buildingId) {
+    public List<UserEntity> getStaffs() {
         Query sql = entityManager.createNativeQuery("select * from user inner join user_role " +
                 "on user_role.userid = user.id inner join role on user_role.roleid = role.id  where role.code = 'staff'",UserEntity.class);
         List<UserEntity> result = sql.getResultList();

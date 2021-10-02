@@ -72,7 +72,7 @@
                                         <div class="col-sm-4">
                                             <div>
                                                 <label>Quận hiện có</label>
-                                                <form:select path="districtCode" cssClass="form-control">
+                                                <form:select path="district" cssClass="form-control">
                                                     <form:option value="" label="--Quận"/>
                                                     <form:options items="${districtCode}"/>
                                                 </form:select>
@@ -255,6 +255,9 @@
                                     <button class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Giao tòa nhà" onclick = "assignmentBuilding(${item.id})">
                                         <i class="fa fa-bars" aria-hidden="true"></i>
                                     </button>
+                                    <a href=/admin/building-edit-${item.id} class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Sửa tòa nhà">
+                                        <i class="ace-icon fa fa-pencil-square-o "></i>
+                                    </a>
                                 </td>
                             </tr>
                         </c:forEach>

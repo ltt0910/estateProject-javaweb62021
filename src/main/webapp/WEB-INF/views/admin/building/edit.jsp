@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right">Quận</label>
                         <div class="col-sm-3">
-                            <form:select path="districtCode" cssClass="form-control">
+                            <form:select path="district" cssClass="form-control">
                                 <form:option value="-1" label="--Quận--"/>
                                 <form:options items="${district}"/>
                             </form:select>
@@ -191,15 +191,10 @@
                             <input type="tel" id="managerPhone" name="managerPhone"  class="col-xs-10 col-sm-12" />
                         </div>
                     </div>
-                    <%--<c:if test="${addBuilding.id == null}">--%>
                         <div class="col-sm-9">
                             <label class="col-sm-4 control-label no-padding-right" for="buildingTypes">Loại Tòa Nhà</label>
                             <form:checkboxes items="${buildingTypes}" path="buildingTypes"></form:checkboxes>
                         </div>
-                    <%--</c:if>--%>
-                    <%--<c:forEach var="item" items="${addBuilding.buildingTypes}">--%>
-                        <%--<form:checkbox path="buildingTypes" value="${item}"></form:checkbox>--%>
-                    <%--</c:forEach>--%>
                     <div>
                         <form:hidden path="id" cssClass="col-xs-10 col-sm-12" ></form:hidden>
                     </div>
