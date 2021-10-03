@@ -101,7 +101,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         return buildingEntities;
     }
     @Override
-    public List<BuildingEntity> findBuildingAssignmentByStaff(Map<String,Object> params,List<String> buildingTypes,Long id) {
+    public List<BuildingEntity> findBuildingAssignmentByStaff(BuildingSearchBuilder buildingSearchBuilder,Long id) {
 
         Query query = entityManager.createNativeQuery("select * from building as b inner join assignmentbuilding as a on b.id = a.buildingid where a.staffid = "+id+"", BuildingEntity.class);
         List<BuildingEntity> buildingEntities = query.getResultList();

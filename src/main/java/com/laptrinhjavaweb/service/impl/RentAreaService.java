@@ -1,4 +1,5 @@
 package com.laptrinhjavaweb.service.impl;
+import com.laptrinhjavaweb.converter.RentAreaConverter;
 import com.laptrinhjavaweb.dto.reponse.RentAreaDTO;
 import com.laptrinhjavaweb.repository.RentAreaRepository;
 import com.laptrinhjavaweb.service.IRentAreaService;
@@ -11,12 +12,11 @@ import java.util.Map;
 public class RentAreaService implements IRentAreaService {
     @Autowired
     private RentAreaRepository rentAreaRepository;
+    @Autowired
+    private RentAreaConverter rentAreaConverter;
     @Override
     public void addRentArea(RentAreaDTO rentAreaDTO) {
-        Map<String,Object> rentAreas = new HashMap<String,Object>();
-        rentAreas.put("value",rentAreaDTO.getValue());
-        rentAreas.put("buildingId",rentAreaDTO.getBuildingId());
-        rentAreaRepository.addRentArea(rentAreas);
+        rentAreaRepository.addRentArea(rentAreaConverter.convertToEntity(rentAreaDTO));
     }
 
     @Override

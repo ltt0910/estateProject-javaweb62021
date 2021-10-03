@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.service.impl;
 
+import com.laptrinhjavaweb.converter.AssignmentBuildingConverter;
 import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.dto.AssignmentBuildingDTO;
 import com.laptrinhjavaweb.dto.reponse.StaffReponse;
@@ -16,11 +17,11 @@ import java.util.List;
 public class AssignmentBuildingService implements IAssignmentBuildingService {
 
     @Autowired
-    private UserService userService;
-    @Autowired
     private AssignmentBuildingRepository assignmentBuildingRepository;
     @Autowired
     private UserConverter converter;
+    @Autowired
+    private AssignmentBuildingConverter assignmentBuildingConverter;
     public void assignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO) {
         List<Long> newStaffId = assignmentBuildingDTO.getStaffs();
         List<Long> oldStaffId = new ArrayList<>();
@@ -44,19 +45,18 @@ public class AssignmentBuildingService implements IAssignmentBuildingService {
         }
         if(staffUpdate.size()>0) {
             for(Long id : staffUpdate) {
-                assignmentBuildingRepository.addStaff(assignmentBuildingDTO, id);
+                assignmentBuildingRepository.addStaff(assignmentBuildingConverter.convertToEntity(assignmentBuildingDTO), id);
             }
         }
 
         if(staffDelete.size()>0) {
             for(Long id : staffDelete) {
-                assignmentBuildingRepository.deleteStaff(assignmentBuildingDTO, id);
+                assignmentBuildingRepository.deleteStaff(assignmentBuildingConverter.convertToEntity(assignmentBuildingDTO), id);
 
             }
         }
 
     }
-
     @Override
     public List<StaffReponse> staffList(Long buildingId) {
         List<UserEntity> entities = assignmentBuildingRepository.staffList(buildingId);

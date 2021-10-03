@@ -32,7 +32,7 @@ public class BuildingController {
         mav.addObject("buildings",buildingService.searchBuilding(buildingDTO));
         mav.addObject("staffMaps",buildingService.getStaff(buildingDTO.getId()));
         mav.addObject("buildingTypes",buildingService.buildingTypes() );
-        mav.addObject("districtCode", buildingService.districtName());
+        mav.addObject("district", buildingService.districtName());
         return mav;
     }
 
@@ -50,6 +50,7 @@ public class BuildingController {
         BuildingDTO buildingDTO =  buildingService.findById(id);
         mav.addObject("buildingTypes",buildingService.buildingTypes() );
         mav.addObject("addBuilding",buildingDTO);
+        mav.addObject("district", buildingService.districtName());
         return mav;
     }
 }

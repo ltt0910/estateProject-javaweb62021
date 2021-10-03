@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController(value = "buildingAPIOfAdmin")
 @RequestMapping("/api/building")
@@ -41,13 +40,6 @@ public class BuildingAPI {
     public void findById(@RequestBody BuildingDTO editBuilding){
         buildingService.save(editBuilding);
     }
-//
-//    @GetMapping
-//    public List<BuildingDTO> findAll(@RequestParam(required = false) Map<String,Object> params
-//                                    ,@RequestParam(required = false) List<String> buildingTypes){
-//         List<BuildingDTO> result = buildingService.searchBuilding(params,buildingTypes);
-//        return result;
-//    }
     @GetMapping("/{id}/staffs")
     List<StaffReponse> getStaff(@PathVariable Long id){
         List<StaffReponse> result = new ArrayList<>();

@@ -11,8 +11,8 @@ import com.laptrinhjavaweb.entity.RentAreaEntity;
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.enums.BuildingTypesEnum;
 import com.laptrinhjavaweb.enums.DistrictsEnum;
+import com.laptrinhjavaweb.repository.AssignmentBuildingRepository;
 import com.laptrinhjavaweb.repository.BuildingRepository;
-import com.laptrinhjavaweb.repository.RentAreaRepository;
 import com.laptrinhjavaweb.repository.UserRepository;
 import com.laptrinhjavaweb.security.utils.SecurityUtils;
 import com.laptrinhjavaweb.service.IBuildingService;
@@ -35,13 +35,15 @@ public class BuildingService implements IBuildingService {
     private UserRepository userRepository;
     @Autowired
     private RentAreaService rentAreaService;
+    @Autowired
+    private AssignmentBuildingRepository assignmentBuildingRepository;
     @Override
     public List<BuildingDTO> searchBuilding(BuildingDTO dto) {
         List<BuildingEntity> entities = new ArrayList<>();
         BuildingSearchBuilder buildingSearchBuilder = buildingConverter.convertToBuildingSearchBuilder(dto);
         if(SecurityUtils.getAuthorities().contains("ROLE_staff")){
             Long staffId = SecurityUtils.getPrincipal().getId();
-//            entities= buildingRepository.findBuildingAssignmentByStaff(params,buildingTypes,staffId);
+            entities= buildingRepository.findBuildingAssignmentByStaff(buildingSearchBuilder,staffId);
         }
         else{
             entities = buildingRepository.searchBuilding(buildingSearchBuilder);
@@ -114,6 +116,7 @@ public class BuildingService implements IBuildingService {
     @Override
     public void delete(Long id) {
         try{
+            assignmentBuildingRepository.deleteAssignmentBuilding(id);
             buildingRepository.delete(id);
         }catch (Exception e){
             rentAreaService.deleteRentArea(id);

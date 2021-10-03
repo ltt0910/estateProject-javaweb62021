@@ -40,7 +40,7 @@
                         <div class="col-sm-3">
                             <form:select path="district" cssClass="form-control">
                                 <form:option value="-1" label="--Quận--"/>
-                                <form:options items="${district}"/>
+                                <form:options items="${district}" />
                             </form:select>
                         </div>
                     </div>

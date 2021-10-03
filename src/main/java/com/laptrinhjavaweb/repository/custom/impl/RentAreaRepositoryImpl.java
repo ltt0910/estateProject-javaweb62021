@@ -17,11 +17,10 @@ public class RentAreaRepositoryImpl implements RentAreaRepositoryCustom {
 
     @Override
     @Transactional
-    public void addRentArea(Map<String,Object> rentareas) {
-        Query query = entityManager.createNativeQuery("INSERT INTO rentarea (value,buildingid) VALUES ("+rentareas.get("value")+","+rentareas.get("buildingId")+")");
+    public void addRentArea(RentAreaEntity rentareas) {
+        Query query = entityManager.createNativeQuery("INSERT INTO rentarea (value,buildingid) VALUES ("+rentareas.getValue()+","+rentareas.getBuilding().getId()+")");
         query.executeUpdate();
     }
-
     @Override
     @Transactional
     public void deleteRentArea(Long buildingId) {

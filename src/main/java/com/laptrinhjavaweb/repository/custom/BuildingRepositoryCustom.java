@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface BuildingRepositoryCustom {
     List<BuildingEntity> searchBuilding(BuildingSearchBuilder buildingSearchBuilder);
-    List<BuildingEntity> findBuildingAssignmentByStaff(Map<String,Object> params,List<String> buildingTypes,Long id);
+    List<BuildingEntity> findBuildingAssignmentByStaff(BuildingSearchBuilder buildingSearchBuilder,Long staffId);
     List<UserEntity> getStaffs();
 
 }

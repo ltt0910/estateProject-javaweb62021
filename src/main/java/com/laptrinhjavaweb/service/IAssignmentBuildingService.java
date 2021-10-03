@@ -9,5 +9,4 @@ import java.util.List;
 public interface IAssignmentBuildingService {
     void assignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO);
     List<StaffReponse> staffList(Long buildingId);
-
 }

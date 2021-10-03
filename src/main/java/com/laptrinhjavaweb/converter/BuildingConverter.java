@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class BuildingConverter {
 
     @Autowired
-    private ModelMapper modelMapper = new ModelMapper();
+    private ModelMapper modelMapper;
     public BuildingDTO convertToDTO(BuildingEntity entity) {
         BuildingDTO dto = modelMapper.map(entity, BuildingDTO.class);
         return dto;
