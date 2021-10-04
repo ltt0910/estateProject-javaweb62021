@@ -1,11 +1,14 @@
 package com.laptrinhjavaweb.service.impl;
 
-import com.laptrinhjavaweb.converter.AssignmentBuildingConverter;
 import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.dto.AssignmentBuildingDTO;
 import com.laptrinhjavaweb.dto.reponse.StaffReponse;
+import com.laptrinhjavaweb.entity.AssignmentBuildingEntity;
+import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.repository.AssignmentBuildingRepository;
+import com.laptrinhjavaweb.repository.BuildingRepository;
+import com.laptrinhjavaweb.repository.UserRepository;
 import com.laptrinhjavaweb.service.IAssignmentBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,42 +24,20 @@ public class AssignmentBuildingService implements IAssignmentBuildingService {
     @Autowired
     private UserConverter converter;
     @Autowired
-    private AssignmentBuildingConverter assignmentBuildingConverter;
+    private BuildingRepository buildingRepository;
+    @Autowired
+    private UserRepository userRepository;
     public void assignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO) {
-        List<Long> newStaffId = assignmentBuildingDTO.getStaffs();
-        List<Long> oldStaffId = new ArrayList<>();
+        BuildingEntity building = buildingRepository.findOne(assignmentBuildingDTO.getBuildingId());
+        List<UserEntity> staff = new ArrayList<>();
+        for (long item : assignmentBuildingDTO.getStaffs()) {
+            staff.add(userRepository.findOne(item));
 
-        List<StaffReponse> oldStaffList = staffList(assignmentBuildingDTO.getBuildingId());
-        for(StaffReponse staffReponse:oldStaffList){
-            oldStaffId.add(staffReponse.getId());
         }
-        List<Long> staffDelete = new ArrayList<>();
-        List<Long> staffUpdate = new ArrayList<>();
-
-        for(Long id:oldStaffId) {
-            if(!newStaffId.contains(id)) {
-                staffDelete.add(id);
-            }
-        }
-        for(Long id:newStaffId) {
-            if(!oldStaffId.contains(id)) {
-                staffUpdate.add(id);
-            }
-        }
-        if(staffUpdate.size()>0) {
-            for(Long id : staffUpdate) {
-                assignmentBuildingRepository.addStaff(assignmentBuildingConverter.convertToEntity(assignmentBuildingDTO), id);
-            }
-        }
-
-        if(staffDelete.size()>0) {
-            for(Long id : staffDelete) {
-                assignmentBuildingRepository.deleteStaff(assignmentBuildingConverter.convertToEntity(assignmentBuildingDTO), id);
-
-            }
-        }
-
+        building.setUserEntities(staff);
+        buildingRepository.save(building);
     }
+
     @Override
     public List<StaffReponse> staffList(Long buildingId) {
         List<UserEntity> entities = assignmentBuildingRepository.staffList(buildingId);
@@ -68,3 +49,4 @@ public class AssignmentBuildingService implements IAssignmentBuildingService {
         return result;
     }
 }
+

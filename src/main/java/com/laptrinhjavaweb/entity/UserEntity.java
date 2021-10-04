@@ -25,15 +25,16 @@ public class UserEntity extends BaseEntity {
     @Column(name = "email", unique = true)
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "userid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "roleid", nullable = false))
     private List<RoleEntity> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userEntity")
-    private List<AssignmentBuildingEntity> assignmentBuildingEntityList = new ArrayList<>();
-
+//    @OneToMany(mappedBy = "userEntity" ,cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.LAZY)
+//    private List<AssignmentBuildingEntity> assignmentBuildingEntityList = new ArrayList<>();
+    @ManyToMany(mappedBy = "userEntities",cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
+    private List<BuildingEntity> buildingEntities;
     public String getUserName() {
         return userName;
     }
@@ -86,11 +87,19 @@ public class UserEntity extends BaseEntity {
         return serialVersionUID;
     }
 
-    public List<AssignmentBuildingEntity> getAssignmentBuildingEntityList() {
-        return assignmentBuildingEntityList;
+//    public List<AssignmentBuildingEntity> getAssignmentBuildingEntityList() {
+//        return assignmentBuildingEntityList;
+//    }
+//
+//    public void setAssignmentBuildingEntityList(List<AssignmentBuildingEntity> assignmentBuildingEntityList) {
+//        this.assignmentBuildingEntityList = assignmentBuildingEntityList;
+//    }
+
+    public List<BuildingEntity> getBuildingEntities() {
+        return buildingEntities;
     }
 
-    public void setAssignmentBuildingEntityList(List<AssignmentBuildingEntity> assignmentBuildingEntityList) {
-        this.assignmentBuildingEntityList = assignmentBuildingEntityList;
+    public void setBuildingEntities(List<BuildingEntity> buildingEntities) {
+        this.buildingEntities = buildingEntities;
     }
 }

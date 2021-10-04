@@ -52,7 +52,7 @@ public class BuildingService implements IBuildingService {
         List<BuildingDTO> result = new ArrayList<>();
         for(BuildingEntity buildingEntity :entities){
             List<String> rentAreaStrings = new ArrayList<>();
-            List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreaEntityList();
+            List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas();
             for(RentAreaEntity item:rentAreaEntities){
                 if(item.getValue()!=null){
                     rentAreaStrings.add(item.getValue().toString());
@@ -85,31 +85,23 @@ public class BuildingService implements IBuildingService {
         types = types.replace("]","");
         types = types.replace(" ","");
         buildingEntity.setTypes(types);
+        String[] rentAreas = buildingDTO.getRentArea().split(",");
+        List<RentAreaEntity> areaEntities = new ArrayList<>();
+        for (String item: rentAreas) {
+            RentAreaEntity rentAreaEntity = new RentAreaEntity();
+            rentAreaEntity.setBuilding(buildingEntity);
+            rentAreaEntity.setValue(Integer.parseInt(item));
+            areaEntities.add(rentAreaEntity);
+        }
+        buildingEntity.setRentAreas(areaEntities);
         buildingRepository.save(buildingEntity);
-        if(buildingDTO.getId()==null){
-            RentAreaDTO rentAreaDTO = new RentAreaDTO();
-            rentAreaDTO.setBuildingId(buildingEntity.getId());
-            String[] rentAreas = buildingDTO.getRentArea().split(",");
-            for (String item: rentAreas) {
-                try {
-                    rentAreaDTO.setValue(Integer.parseInt(item));
-                }catch (Exception e){
 
-                }
-                if(rentAreaDTO.getValue()!=null){
-                    rentAreaService.addRentArea(rentAreaDTO);
-                }
-            }
+        if(buildingDTO.getId()==null){
+
         }
         else{
             rentAreaService.deleteRentArea(buildingDTO.getId());
-            RentAreaDTO rentAreaDTO = new RentAreaDTO();
-            rentAreaDTO.setBuildingId(buildingEntity.getId());
-            String[] rentAreas = buildingDTO.getRentArea().split(",");
-            for (String item: rentAreas) {
-                rentAreaDTO.setValue(Integer.parseInt(item));
-                rentAreaService.addRentArea(rentAreaDTO);
-            }
+            buildingRepository.save(buildingEntity);
         }
         }
 
@@ -146,7 +138,7 @@ public class BuildingService implements IBuildingService {
         BuildingEntity buildingEntity = buildingRepository.findOne(id);
         String[] buildingTypes = buildingEntity.getTypes().split(",");
         List<String> rentAreaStrings = new ArrayList<>();
-        List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreaEntityList();
+        List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas();
         for(RentAreaEntity item:rentAreaEntities){
             rentAreaStrings.add(item.getValue().toString());
         }

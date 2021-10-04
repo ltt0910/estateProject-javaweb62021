@@ -1,8 +1,5 @@
 package com.laptrinhjavaweb.entity;
 
-import com.sun.deploy.security.ValidationState;
-import org.springframework.context.annotation.Lazy;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +49,15 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "type")
     private String types;
 
-    @OneToMany(mappedBy = "building",fetch = FetchType.LAZY)
-    private List<RentAreaEntity> rentAreaEntityList = new ArrayList<>();
+    @OneToMany(mappedBy = "building", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<RentAreaEntity> rentAreas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "building",fetch = FetchType.LAZY)
-    private List<AssignmentBuildingEntity> assignmentBuildingEntityList = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "assignmentbuilding",
+        joinColumns = @JoinColumn(name = "buildingid"),
+        inverseJoinColumns = @JoinColumn(name = "staffid"))
+    private List<UserEntity> userEntities;
+
     public String getName() {
         return name;
     }
@@ -135,6 +136,21 @@ public class BuildingEntity extends BaseEntity {
 
     public void setDistrict(String district) {
         this.district = district;
+    }
+    public List<RentAreaEntity> getRentAreas() {
+        return rentAreas;
+    }
+
+    public List<UserEntity> getUserEntities() {
+        return userEntities;
+    }
+
+    public void setUserEntities(List<UserEntity> userEntities) {
+        this.userEntities = userEntities;
+    }
+
+    public void setRentAreas(List<RentAreaEntity> rentAreas) {
+        this.rentAreas = rentAreas;
     }
 
     public String getLevel() {
@@ -223,21 +239,5 @@ public class BuildingEntity extends BaseEntity {
 
     public void setServiceFee(String serviceFee) {
         this.serviceFee = serviceFee;
-    }
-
-    public List<RentAreaEntity> getRentAreaEntityList() {
-        return rentAreaEntityList;
-    }
-
-    public void setRentAreaEntityList(List<RentAreaEntity> rentAreaEntityList) {
-        this.rentAreaEntityList = rentAreaEntityList;
-    }
-
-    public List<AssignmentBuildingEntity> getAssignmentBuildingEntityList() {
-        return assignmentBuildingEntityList;
-    }
-
-    public void setAssignmentBuildingEntityList(List<AssignmentBuildingEntity> assignmentBuildingEntityList) {
-        this.assignmentBuildingEntityList = assignmentBuildingEntityList;
     }
 }

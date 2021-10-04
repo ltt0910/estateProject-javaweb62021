@@ -20,28 +20,12 @@ public class AssignmentBuildingRepositoryImpl implements AssignmentBuildingRepos
     @PersistenceContext
     private EntityManager entityManager;
 
-
-    @Override
-    @Transactional
-    public void deleteStaff(AssignmentBuildingEntity assignmentBuildingEntity, Long id) {
-        Query sqlDelete =  entityManager.createNativeQuery("delete from assignmentbuilding where assignmentbuilding.buildingid = "+assignmentBuildingEntity.getBuilding().getId()+" and assignmentbuilding.staffid = " + id + "",AssignmentBuildingEntity.class);
-        sqlDelete.executeUpdate();
-    }
-
     @Override
     @Transactional
     public void deleteAssignmentBuilding(Long buildingId) {
         Query sqlDelete =  entityManager.createNativeQuery("delete from assignmentbuilding where assignmentbuilding.buildingid = "+buildingId+"",AssignmentBuildingEntity.class);
         sqlDelete.executeUpdate();
     }
-
-    @Override
-    @Transactional
-    public void addStaff(AssignmentBuildingEntity addStaff, Long id) {
-        Query sqlUpdate =  entityManager.createNativeQuery("insert into assignmentbuilding(staffid,buildingid) values("+id+","+addStaff.getBuilding().getId()+")");
-        sqlUpdate.executeUpdate();
-    }
-
     @Override
     public List<UserEntity> staffList(Long buildingId) {
         Query sql = entityManager.createNativeQuery("select * from user " +
