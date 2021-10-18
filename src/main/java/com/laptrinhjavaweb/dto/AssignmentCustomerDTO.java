@@ -2,16 +2,16 @@ package com.laptrinhjavaweb.dto;
 
 import java.util.List;
 
-public class AssignmentBuildingDTO {
-    private Long buildingId;
+public class AssignmentCustomerDTO {
+    private Long customerId;
     private List<Long> staffs;
 
-    public Long getBuildingId() {
-        return buildingId;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setBuildingId(Long buildingId) {
-        this.buildingId = buildingId;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public List<Long> getStaffs() {

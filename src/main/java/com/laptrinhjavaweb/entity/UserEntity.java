@@ -31,10 +31,12 @@ public class UserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "roleid", nullable = false))
     private List<RoleEntity> roles = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "userEntity" ,cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.LAZY)
-//    private List<AssignmentBuildingEntity> assignmentBuildingEntityList = new ArrayList<>();
     @ManyToMany(mappedBy = "userEntities",cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
     private List<BuildingEntity> buildingEntities;
+
+    @ManyToMany(mappedBy = "userEntities",cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
+    private List<CustomerEntity> customerEntities;
+
     public String getUserName() {
         return userName;
     }

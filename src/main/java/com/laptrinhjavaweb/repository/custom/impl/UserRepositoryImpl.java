@@ -40,4 +40,21 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         }
             return false;
     }
+
+    @Override
+    public boolean setCheckedOfCustomer(Long customerId, Long staffId) {
+        Query sql = entityManager.createNativeQuery("select user.id , user.fullname " +
+                "from user inner join assignmentcustomer on user.id = assignmentcustomer.staffid " +
+                "inner join user_role on user.id = user_role.userid inner join role on user_role.roleid = role.id " +
+                "where role.code = 'staff' and assignmentcustomer.customerid = "+customerId+" and user.id = "+staffId+" ",UserEntity.class);
+        try {
+            Object result =  sql.getSingleResult();
+            if(result!=null){
+                return true;
+            }
+        }catch (Exception e){
+
+        }
+        return false;
+    }
 }

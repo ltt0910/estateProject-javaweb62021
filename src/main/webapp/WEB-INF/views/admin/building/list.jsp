@@ -92,8 +92,6 @@
                                                 <input type = "text" id = "street" class = "form-control" name="street" value="${modelSearch.street}" />
                                             </div>
                                         </div>
-
-                                        <!-- PAGE CONTENT ENDS -->
                                     </div><!-- /.col -->
 
                                     <div class="form-group">
@@ -330,7 +328,6 @@
             window.location.assign('http://localhost:8080/admin/building-list');
 
         });
-
         function assignStaff(data) {
             $.ajax({
                 url: "http://localhost:8080/api/assigntmentBuilding",
@@ -356,12 +353,28 @@
             data = buildingIds;
             deleteBuilding(data);
         });
+        function deleteBuilding(data) {
+            $.ajax({
+                url: "http://localhost:8080/api/building",
+                type: "DELETE",
+                // dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (res) {
+                    console.log("success");
+                    window.location.assign('http://localhost:8080/admin/building-list');
+                },
+                error: function (res) {
+                    console.log("failed");
+                    console.log(res);
+                }
+            });
+        }
         function loadStaff(buildingId) {
             $.ajax({
                 url: 'http://localhost:8080/api/building/'+buildingId+'/staffs',
                 dataType: 'json',
                 type: "GET",
-                // contentType: 'application/json',
                 success: function (res) {
                     console.log("success");
                     var row = '';
@@ -373,24 +386,6 @@
                     });
                     $('#staffList tbody').html(row);
 
-                },
-                error: function (res) {
-                    console.log("failed");
-                    console.log(res);
-                }
-            });
-        }
-
-        function deleteBuilding(data) {
-            $.ajax({
-                url: "http://localhost:8080/api/building",
-                type: "DELETE",
-                // dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function (res) {
-                    console.log("success");
-                    window.location.assign('http://localhost:8080/admin/building-list');
                 },
                 error: function (res) {
                     console.log("failed");

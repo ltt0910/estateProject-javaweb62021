@@ -10,7 +10,6 @@ public  enum BuildingTypesEnum {
         BuildingTypesEnum(String buildingTypes) {
             this.buildingTypes = buildingTypes;
         }
-
         public String getBuildingTypes() {
             return buildingTypes;
         }
