@@ -22,7 +22,7 @@ public class CustomerEntity extends BaseEntity {
     @Column(name = "note")
     private String note;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.REMOVE})
     private List<TransactionEntity> transactionEntities = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
