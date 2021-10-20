@@ -330,7 +330,7 @@
         });
         function assignStaff(data) {
             $.ajax({
-                url: "http://localhost:8080/api/assigntmentBuilding",
+                url: "http://localhost:8080/api/building/assignment",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/json',

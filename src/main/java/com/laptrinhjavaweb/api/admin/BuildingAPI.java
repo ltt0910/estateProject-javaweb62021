@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.api.admin;
 
+import com.laptrinhjavaweb.dto.AssignmentBuildingDTO;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.dto.reponse.StaffReponse;
 import com.laptrinhjavaweb.service.IBuildingService;
@@ -16,8 +17,6 @@ public class BuildingAPI {
 
     @Autowired
     private IBuildingService buildingService;
-    @Autowired
-    private IUserService userService;
     @PostMapping
     public BuildingDTO createBuilding(@RequestBody BuildingDTO newBuilding) {
         buildingService.save(newBuilding);
@@ -45,6 +44,11 @@ public class BuildingAPI {
         List<StaffReponse> result = new ArrayList<>();
         result = buildingService.getStaff(id);
         return result;
+    }
+
+    @PostMapping("/assignment")
+    public void addAssignmentBuilding(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO) {
+        buildingService.assignmentBuilding(assignmentBuildingDTO);
     }
 
 }

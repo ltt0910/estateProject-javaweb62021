@@ -1,8 +1,14 @@
 package com.laptrinhjavaweb.service;
 
+import com.laptrinhjavaweb.dto.AssignmentCustomerDTO;
 import com.laptrinhjavaweb.dto.CustomerDTO;
+import com.laptrinhjavaweb.dto.reponse.ReponseCustomerDTO;
 import com.laptrinhjavaweb.dto.reponse.StaffReponse;
+import com.laptrinhjavaweb.dto.request.RequestCustomerDTO;
+import com.laptrinhjavaweb.entity.CustomerEntity;
+import com.laptrinhjavaweb.entity.UserEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ICustomerService {
@@ -10,6 +16,7 @@ public interface ICustomerService {
     void delete(long id);
     CustomerDTO findOne(Long id);
     List<StaffReponse> getStaff(Long id);
-    List<CustomerDTO> searchCustomer(CustomerDTO customerDTO);
+    List<ReponseCustomerDTO> searchCustomer(RequestCustomerDTO customerDTO);
+    void assignmentCustomer(AssignmentCustomerDTO assignmentCustomerDTO);
 
 }

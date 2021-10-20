@@ -2,8 +2,11 @@ package com.laptrinhjavaweb.service.impl;
 
 import com.laptrinhjavaweb.converter.CustomerConverter;
 import com.laptrinhjavaweb.converter.UserConverter;
+import com.laptrinhjavaweb.dto.AssignmentCustomerDTO;
 import com.laptrinhjavaweb.dto.CustomerDTO;
+import com.laptrinhjavaweb.dto.reponse.ReponseCustomerDTO;
 import com.laptrinhjavaweb.dto.reponse.StaffReponse;
+import com.laptrinhjavaweb.dto.request.RequestCustomerDTO;
 import com.laptrinhjavaweb.entity.CustomerEntity;
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.repository.CustomerRepository;
@@ -13,6 +16,7 @@ import com.laptrinhjavaweb.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +32,7 @@ public class CustomerService implements ICustomerService {
     private UserRepository userRepository;
 
     @Override
+    @Transactional
     public void save(CustomerDTO customerDTO) {
         CustomerEntity customerEntity = customerConverter.convertToEntity(customerDTO);
         customerRepository.save(customerEntity);
@@ -61,9 +66,9 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public List<CustomerDTO> searchCustomer(CustomerDTO customerDTO) {
+    public List<ReponseCustomerDTO> searchCustomer(RequestCustomerDTO customerDTO) {
         CustomerEntity customerEntity = new CustomerEntity();
-        customerEntity = customerConverter.convertToEntity(customerDTO);
+        customerEntity = customerConverter.convertDTOToEntity(customerDTO);
         List<CustomerEntity> customerEntities = new ArrayList<>();
         if(SecurityUtils.getAuthorities().contains("ROLE_manager")){
             customerEntities = customerRepository.searchCustomer(customerEntity,customerDTO.getStaffId());
@@ -72,12 +77,24 @@ public class CustomerService implements ICustomerService {
             Long staffId = SecurityUtils.getPrincipal().getId();
             customerEntities = customerRepository.searchCustomer(customerEntity,staffId);
         }
-        List<CustomerDTO> result = new ArrayList<>();
+        List<ReponseCustomerDTO> result = new ArrayList<>();
         for (CustomerEntity item:customerEntities) {
-            CustomerDTO customerDTO1 = new CustomerDTO();
-            customerDTO1 = customerConverter.convertToDTO(item);
+            ReponseCustomerDTO customerDTO1 = new ReponseCustomerDTO();
+            customerDTO1 = customerConverter.convertEntityToDTO(item);
             result.add(customerDTO1);
         }
         return result;
+    }
+
+    @Override
+    public void assignmentCustomer(AssignmentCustomerDTO assignmentCustomerDTO) {
+        CustomerEntity customerEntity = customerRepository.findOne(assignmentCustomerDTO.getCustomerId());
+        List<UserEntity> staff = new ArrayList<>();
+        for (long item : assignmentCustomerDTO.getStaffs()) {
+            staff.add(userRepository.findOne(item));
+
+        }
+        customerEntity.setUserEntities(staff);
+        customerRepository.save(customerEntity);
     }
 }

@@ -3,6 +3,7 @@ package com.laptrinhjavaweb.service.impl;
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.converter.UserConverter;
+import com.laptrinhjavaweb.dto.AssignmentBuildingDTO;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.dto.reponse.StaffReponse;
 import com.laptrinhjavaweb.entity.BuildingEntity;
@@ -161,6 +162,29 @@ public class BuildingService implements IBuildingService {
                 staffReponse.setChecked("checked");
             }
             result.add(staffReponse);
+        }
+        return result;
+    }
+
+    @Override
+    public void assignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO) {
+        BuildingEntity building = buildingRepository.findOne(assignmentBuildingDTO.getBuildingId());
+        List<UserEntity> staff = new ArrayList<>();
+        for (long item : assignmentBuildingDTO.getStaffs()) {
+            staff.add(userRepository.findOne(item));
+
+        }
+        building.setUserEntities(staff);
+        buildingRepository.save(building);
+    }
+
+    @Override
+    public List<StaffReponse> staffList(Long buildingId) {
+        List<UserEntity> entities = assignmentBuildingRepository.staffList(buildingId);
+        List<StaffReponse> result = new ArrayList<>();
+        for (UserEntity item:entities){
+           StaffReponse staffReponse = userConverter.convertToStaffReponse(item);
+          result.add(staffReponse);
         }
         return result;
     }

@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.api.admin;
 
+import com.laptrinhjavaweb.dto.AssignmentCustomerDTO;
 import com.laptrinhjavaweb.dto.CustomerDTO;
 import com.laptrinhjavaweb.dto.reponse.StaffReponse;
 import com.laptrinhjavaweb.service.impl.CustomerService;
@@ -15,9 +16,14 @@ public class CustomerAPI {
     @Autowired
     private CustomerService customerService;
     @PostMapping
-    public CustomerDTO createBuilding(@RequestBody CustomerDTO newBuilding) {
-        customerService.save(newBuilding);
-        return newBuilding;
+    public CustomerDTO createCustomer(@RequestBody CustomerDTO newCustomer) {
+        customerService.save(newCustomer);
+        return newCustomer;
+    }
+
+    @PostMapping("/assignment")
+    public void addAssignmentCustomer(@RequestBody AssignmentCustomerDTO assignmentCustomerDTO) {
+        customerService.assignmentCustomer(assignmentCustomerDTO);
     }
 
     @DeleteMapping

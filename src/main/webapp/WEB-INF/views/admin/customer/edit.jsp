@@ -12,7 +12,7 @@
 
 <html>
 <head>
-    <title>chỉnh sửa người dùng</title>
+    <title>chỉnh sửa khách hàng</title>
 </head>
 <body>
 <div class="main-content">
@@ -88,8 +88,53 @@
                         <div class="space-4"></div>
                         <form:hidden path="id" cssClass="col-xs-10 col-sm-12" ></form:hidden>
                         <div class="col-sm-3 control-label no-padding-right" style="margin-left: 200px">
-                            <button type="button" class="btn btn-success" data-dismiss="modal" id="btnAddCustomer">Thêm Khách hàng</button>
+                            <c:if test="${id ==null}">
+                                <button type="button" class="btn btn-success" data-dismiss="modal" id="btnAddCustomer">Thêm Khách hàng</button>
+                            </c:if>
+                            <c:if test="${id !=null}">
+                                <button type="button" class="btn btn-success" data-dismiss="modal" id="btnAddCustomer">Sửa Thông Tin</button>
+                            </c:if>
                             <button type="button" class="btn btn-rotate" data-dismiss="modal">Hủy</button>
+                        </div>
+                        <div class="main-content">
+                            <div class="main-content-inner">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <c:forEach var="item" items="${transactionTypes}">
+                                            <label class="control-label no-padding-right" >${item.value} </label>
+                                            <input type="hidden" id="code" name="code" value="">
+                                            <button  class="btn btn-white btn-info btn-bold" data-toggle="tooltip" type="button" onclick="addNotes('${item.key}');">
+                                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                            </button>
+                                            <hr>
+                                            <div class="col-xs-12">
+                                                <table id="buildingList" class="table table-striped table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="col-sm-3">Ngày tạo</th>
+                                                        <th class="col-sm-6">Ghi chú</th>
+
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <c:forEach var="index" items="${transactions}">
+                                                        <c:if test="${item.key.equals(index.code)}">
+                                                            <tr>
+                                                                <td>${index.createdDate}</td>
+                                                                <td>${index.note}</td>
+                                                            </tr>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <input type="text" id="note_${item.key}" class="form-control" placeholder="Thêm note" name="note" value=""/>
+                                                    </tbody>
+                                                    <input type="hidden" id="customerid" class="form-control" value="${getcustomerId}"/>
+                                                </table>
+                                            </div>
+                                            </br>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -104,8 +149,7 @@
 
     </div><!-- /.page-content -->
 </div>
-</div><!-- /.main-content -->
-
+<!-- /.main-content -->
 <script>
     $('#btnAddCustomer').click(function (e) {
         e.preventDefault();
@@ -130,6 +174,28 @@
             }
         });
     });
+    function addNotes(code) {
+        // e.preventDefault();
+        var data = {};
+        data['customerId'] = $('#customerid').val();
+        data['code'] = code;
+        data['note'] =$('#note_'+code).val();
+        $.ajax({
+            url: "http://localhost:8080/api/transaction",
+            type: "POST",
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (res) {
+                window.location.assign('http://localhost:8080/admin/customer-list');
+                console.log("success");
+            },
+            error: function (res) {
+                console.log("failed");
+                console.log(res);
+            }
+        });
+    }
 </script>
 </body>
 </html>

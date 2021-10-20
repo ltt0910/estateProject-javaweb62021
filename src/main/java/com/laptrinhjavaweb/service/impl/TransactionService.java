@@ -10,6 +10,7 @@ import com.laptrinhjavaweb.service.ITrasactionService;
 import com.laptrinhjavaweb.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class TransactionService implements ITrasactionService {
     }
 
     @Override
+    @Transactional
     public TransactionTypeDTO save(TransactionTypeDTO newTransaction) {
         if(!StringUtils.isNullOrEmty(newTransaction.getNote())){
             TransactionEntity transactionEntity  = new TransactionEntity();
@@ -47,6 +49,14 @@ public class TransactionService implements ITrasactionService {
             return newTransaction;
         }
         return null;
+    }
+
+    @Override
+    public TransactionTypeDTO getOne(Long customerId) {
+        TransactionTypeDTO result = new TransactionTypeDTO();
+        TransactionEntity transactionEntity = transactionRepository.getOne(customerId);
+        result = transactionConverter.convertToDTO(transactionEntity);
+        return result;
     }
 
     public Map<String,String> getTransaction() {

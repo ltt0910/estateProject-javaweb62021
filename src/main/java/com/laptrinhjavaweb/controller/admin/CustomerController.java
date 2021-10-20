@@ -1,8 +1,10 @@
 package com.laptrinhjavaweb.controller.admin;
 
 import com.laptrinhjavaweb.dto.CustomerDTO;
+import com.laptrinhjavaweb.dto.request.RequestCustomerDTO;
 import com.laptrinhjavaweb.service.impl.BuildingService;
 import com.laptrinhjavaweb.service.impl.CustomerService;
+import com.laptrinhjavaweb.service.impl.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,8 +19,12 @@ public class CustomerController {
     private CustomerService customerService;
     @Autowired
     BuildingService buildingService;
+    @Autowired
+    private TransactionService transactionService;
+    private ModelAndView mav;
+
     @RequestMapping(value = "/admin/customer-list", method = RequestMethod.GET)
-    public ModelAndView buildingList(@ModelAttribute("modelSearch") CustomerDTO customerDTO) {
+    public ModelAndView buildingList(@ModelAttribute("modelSearch") RequestCustomerDTO customerDTO) {
         ModelAndView mav = new ModelAndView("admin/customer/list");
         mav.addObject("modelSearch",customerDTO);
         mav.addObject("customers",customerService.searchCustomer(customerDTO));
@@ -38,6 +44,9 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("admin/customer/edit");
         CustomerDTO customerDTO =  customerService.findOne(id);
         mav.addObject("addCustomer",customerDTO);
+        mav.addObject("getcustomerId",id);
+        mav.addObject("transactionTypes",transactionService.getTransaction() );
+        mav.addObject("transactions",transactionService.getTransactionByCustomer(id));
         return mav;
     }
 }

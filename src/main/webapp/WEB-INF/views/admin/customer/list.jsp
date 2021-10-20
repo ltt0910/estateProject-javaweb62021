@@ -155,9 +155,9 @@
                                             <i class="fa fa-bars" aria-hidden="true"></i>
                                         </button>
                                     </security:authorize>
-                                        <a href=/admin/transaction-${item.id} class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Quản lý giao dịch">
-                                            <i class="ace-icon fa fa-cogs "></i>
-                                        </a>
+                                        <%--<a href=/admin/transaction-${item.id} class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Quản lý giao dịch">--%>
+                                            <%--<i class="ace-icon fa fa-cogs "></i>--%>
+                                        <%--</a>--%>
                                         <a href=/admin/customer-edit-${item.id} class="btn btn-xs btn-info" data-toggle = "tooltip" title = "Sửa thông tin">
                                             <i class="ace-icon fa fa-pencil-square-o "></i>
                                         </a>
@@ -261,7 +261,7 @@
     });
     function assignStaff(data) {
         $.ajax({
-            url: "http://localhost:8080/api/assigntmentCustomer",
+            url: "http://localhost:8080/api/customer/assignment",
             type: "POST",
             dataType: 'json',
             contentType: 'application/json',

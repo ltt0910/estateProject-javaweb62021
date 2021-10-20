@@ -1,9 +1,6 @@
 package com.laptrinhjavaweb.repository.custom;
 
-import com.laptrinhjavaweb.dto.AssignmentBuildingDTO;
-import com.laptrinhjavaweb.entity.AssignmentBuildingEntity;
 import com.laptrinhjavaweb.entity.UserEntity;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

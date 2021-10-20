@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.service;
 
+import com.laptrinhjavaweb.dto.AssignmentBuildingDTO;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.dto.reponse.StaffReponse;
 
@@ -14,4 +15,6 @@ public interface IBuildingService {
     void delete(Long id);
     BuildingDTO findById(Long id);
     List<StaffReponse> getStaff(Long id);
+    void assignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO);
+    List<StaffReponse> staffList(Long buildingId);
 }
