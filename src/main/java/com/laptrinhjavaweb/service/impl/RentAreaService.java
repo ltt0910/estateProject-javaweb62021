@@ -6,6 +6,9 @@ import com.laptrinhjavaweb.repository.RentAreaRepository;
 import com.laptrinhjavaweb.service.IRentAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
 @Service
 public class RentAreaService implements IRentAreaService {
     @Autowired
@@ -13,11 +16,13 @@ public class RentAreaService implements IRentAreaService {
     @Autowired
     private RentAreaConverter rentAreaConverter;
     @Override
+    @Transactional
     public void addRentArea(RentAreaDTO rentAreaDTO) {
         rentAreaRepository.addRentArea(rentAreaConverter.convertToEntity(rentAreaDTO));
     }
 
     @Override
+    @Transactional
     public void deleteRentArea(Long buildingId) {
         rentAreaRepository.deleteRentArea(buildingId);
     }

@@ -39,6 +39,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    @Transactional
     public void delete(long id) {
         customerRepository.delete(id);
     }
@@ -87,6 +88,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    @Transactional
     public void assignmentCustomer(AssignmentCustomerDTO assignmentCustomerDTO) {
         CustomerEntity customerEntity = customerRepository.findOne(assignmentCustomerDTO.getCustomerId());
         List<UserEntity> staff = new ArrayList<>();
