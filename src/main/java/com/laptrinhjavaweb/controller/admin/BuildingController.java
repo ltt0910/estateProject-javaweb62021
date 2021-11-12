@@ -17,8 +17,6 @@ public class BuildingController {
 
     @Autowired
     private IBuildingService buildingService ;
-    @Autowired
-    private IUserService userService;
 
     @RequestMapping(value = "/admin/building-list", method = RequestMethod.GET)
     public ModelAndView buildingList(@ModelAttribute("modelSearch") BuildingDTO buildingDTO) {
@@ -44,7 +42,8 @@ public class BuildingController {
         mav.addObject("district", buildingService.districtName());
         return mav;
     }
-    @RequestMapping(value = "/admin/building-edit-{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/building-edit-{id}", method = RequestMethod.GET
+    )
     public ModelAndView buildingEdit(@PathVariable(value = "id") Long id ) {
         ModelAndView mav = new ModelAndView("admin/building/edit");
         BuildingDTO buildingDTO =  buildingService.findById(id);

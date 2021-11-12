@@ -4,5 +4,6 @@ import com.laptrinhjavaweb.entity.RentAreaEntity;
 import com.laptrinhjavaweb.repository.custom.RentAreaRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RentAreaRepository extends RentAreaRepositoryCustom, JpaRepository<RentAreaEntity,Long> {
+public interface RentAreaRepository extends RentAreaRepositoryCustom , JpaRepository<RentAreaEntity,Long>{
+    void deleteByBuilding_Id(Long id);
 }

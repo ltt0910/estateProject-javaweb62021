@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface RentAreaRepositoryCustom {
     void addRentArea(RentAreaEntity rentAreaEntity);
-    void deleteRentArea(Long buildingId);
+    void deleteRentArea(Long id);
 }

@@ -49,7 +49,7 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "type")
     private String types;
 
-    @OneToMany(mappedBy = "building", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "building", cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE})
     private List<RentAreaEntity> rentAreas = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

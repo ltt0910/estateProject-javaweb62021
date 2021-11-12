@@ -13,6 +13,7 @@ import com.laptrinhjavaweb.enums.BuildingTypesEnum;
 import com.laptrinhjavaweb.enums.DistrictsEnum;
 import com.laptrinhjavaweb.repository.AssignmentBuildingRepository;
 import com.laptrinhjavaweb.repository.BuildingRepository;
+import com.laptrinhjavaweb.repository.RentAreaRepository;
 import com.laptrinhjavaweb.repository.UserRepository;
 import com.laptrinhjavaweb.security.utils.SecurityUtils;
 import com.laptrinhjavaweb.service.IBuildingService;
@@ -36,41 +37,22 @@ public class BuildingService implements IBuildingService {
     @Autowired
     private RentAreaService rentAreaService;
     @Autowired
+    private RentAreaRepository rentAreaRepository;
+    @Autowired
     private AssignmentBuildingRepository assignmentBuildingRepository;
+
     @Override
     public List<BuildingDTO> searchBuilding(BuildingDTO dto) {
         List<BuildingEntity> entities = new ArrayList<>();
-        BuildingSearchBuilder buildingSearchBuilder = buildingConverter.convertToBuildingSearchBuilder(dto);
-        if(SecurityUtils.getAuthorities().contains("ROLE_staff")){
+        if(SecurityUtils.getAuthorities().contains("ROLE_staff")) {
             Long staffId = SecurityUtils.getPrincipal().getId();
-            entities= buildingRepository.findBuildingAssignmentByStaff(buildingSearchBuilder,staffId);
+            dto.setStaffId(staffId);
         }
-        else{
-            entities = buildingRepository.searchBuilding(buildingSearchBuilder);
-        }
-
+        BuildingSearchBuilder buildingSearchBuilder = buildingConverter.convertToBuildingSearchBuilder(dto);
+        entities = buildingRepository.searchBuilding(buildingSearchBuilder);
         List<BuildingDTO> result = new ArrayList<>();
         for(BuildingEntity buildingEntity :entities){
-            List<String> rentAreaStrings = new ArrayList<>();
-            List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas();
-            for(RentAreaEntity item:rentAreaEntities){
-                if(item.getValue()!=null){
-                    rentAreaStrings.add(item.getValue().toString());
-                }
-            }
-            Object[] rentAreas = rentAreaStrings.toArray();
-            String rentArea = Arrays.toString(rentAreas).replace("[","");
-            rentArea = rentArea.replace("]","");
-            rentArea = rentArea.replace(" ","");
             BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingEntity);
-            buildingDTO.setRentArea(rentArea);
-            if(buildingEntity.getDistrict().equals("-1")) {
-                buildingDTO.setAddress(buildingEntity.getStreet()+"-"+buildingEntity.getWard());
-            }
-            else{
-                buildingDTO.setAddress(buildingEntity.getStreet()+"-"+buildingEntity.getWard()+"-"+DistrictsEnum.existDistrict(buildingEntity.getDistrict()));
-            }
-
             result.add(buildingDTO);
         }
         return result;
@@ -80,40 +62,31 @@ public class BuildingService implements IBuildingService {
     @Transactional
     public void save(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
-        String[] buildingTypes = buildingDTO.getBuildingTypes();
-        String types = Arrays.toString(buildingTypes).replace("[","");
-        types = types.replace("]","");
-        types = types.replace(" ","");
-        buildingEntity.setTypes(types);
-        String[] rentAreas = buildingDTO.getRentArea().split(",");
+        buildingEntity.setRentAreas(buildingRentArea(buildingDTO));
+        buildingEntity.setTypes(String.join(",",buildingDTO.getBuildingTypes()));
+        if(buildingDTO.getId()!=null){
+            rentAreaRepository.deleteRentArea(buildingDTO.getId());
+        }
+        buildingRepository.save(buildingEntity);
+        }
+
+    public List<RentAreaEntity> buildingRentArea(BuildingDTO buildingDTO) {
+        BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
         List<RentAreaEntity> areaEntities = new ArrayList<>();
+        String[] rentAreas = buildingDTO.getRentArea().split(",");
         for (String item: rentAreas) {
             RentAreaEntity rentAreaEntity = new RentAreaEntity();
             rentAreaEntity.setBuilding(buildingEntity);
             rentAreaEntity.setValue(Integer.parseInt(item));
             areaEntities.add(rentAreaEntity);
         }
-        buildingEntity.setRentAreas(areaEntities);
-        buildingRepository.save(buildingEntity);
-
-        if(buildingDTO.getId()==null){
-
-        }
-        else{
-            rentAreaService.deleteRentArea(buildingDTO.getId());
-            buildingRepository.save(buildingEntity);
-        }
-        }
+        return areaEntities;
+    }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        try{
-            assignmentBuildingRepository.deleteAssignmentBuilding(id);
-            buildingRepository.delete(id);
-        }catch (Exception e){
-            rentAreaService.deleteRentArea(id);
-            buildingRepository.delete(id);
-        }
+        buildingRepository.deleteBuildingEntityById(id);
     }
 
     @Override
@@ -134,21 +107,9 @@ public class BuildingService implements IBuildingService {
         return result;
     }
     public BuildingDTO findById(Long id){
-        BuildingDTO buildingDTO = new BuildingDTO();
         BuildingEntity buildingEntity = buildingRepository.findOne(id);
-        String[] buildingTypes = buildingEntity.getTypes().split(",");
         List<String> rentAreaStrings = new ArrayList<>();
-        List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreas();
-        for(RentAreaEntity item:rentAreaEntities){
-            rentAreaStrings.add(item.getValue().toString());
-        }
-        Object[] rentAreas = rentAreaStrings.toArray();
-        String rentArea = Arrays.toString(rentAreas).replace("[","");
-        rentArea = rentArea.replace("]","");
-        rentArea =rentArea.replace(" ","");
-        buildingDTO = buildingConverter.convertToDTO(buildingEntity);
-        buildingDTO.setBuildingTypes(buildingTypes);
-        buildingDTO.setRentArea(rentArea);
+        BuildingDTO buildingDTO = buildingConverter.convertToDTO1(buildingEntity);
         return buildingDTO;
     }
 
