@@ -138,10 +138,10 @@
             data: JSON.stringify(data),
             success: function (res) {
                 $('#loading_image').hide();
-                window.location.href = "<c:url value='/admin/user-edit-"+res.id+"?message=insert_success'/>";
+                alert("Thành công");
             },
             error: function (res) {
-                window.location.href = "<c:url value='/admin/user-edit-"+res.id+"?message=error_system'/>";
+                alert("Lỗi");
             }
         });
     }

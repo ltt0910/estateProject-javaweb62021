@@ -3,7 +3,6 @@ package com.laptrinhjavaweb.service.impl;
 import com.laptrinhjavaweb.converter.RentAreaConverter;
 import com.laptrinhjavaweb.dto.reponse.RentAreaDTO;
 import com.laptrinhjavaweb.repository.RentAreaRepository;
-import com.laptrinhjavaweb.repository.custom.RentAreaRepositoryCustom;
 import com.laptrinhjavaweb.service.IRentAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class RentAreaService implements IRentAreaService {
 
     @Override
     @Transactional
-    public void deleteRentArea(Long id) {
-        rentAreaRepository.deleteRentArea(id);
+    public void deleteRentArea(Long buildingId) {
+        rentAreaRepository.deleteRentArea(buildingId);
     }
 }

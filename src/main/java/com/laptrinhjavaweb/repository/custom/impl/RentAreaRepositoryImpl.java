@@ -21,11 +21,10 @@ public class RentAreaRepositoryImpl implements RentAreaRepositoryCustom {
         Query query = entityManager.createNativeQuery("INSERT INTO rentarea (value,buildingid) VALUES ("+rentareas.getValue()+","+rentareas.getBuilding().getId()+")");
         query.executeUpdate();
     }
-
     @Override
     @Transactional
-    public void deleteRentArea(Long id) {
-        Query query = entityManager.createNativeQuery("DELETE from rentarea where buildingid= "+id+"");
+    public void deleteRentArea(Long buildingId) {
+        Query query = entityManager.createNativeQuery("DELETE FROM rentarea WHERE buildingid = "+buildingId+"");
         query.executeUpdate();
     }
 }

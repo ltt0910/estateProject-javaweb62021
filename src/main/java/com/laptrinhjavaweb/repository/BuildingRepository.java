@@ -11,5 +11,4 @@ import java.util.List;
 
 @Repository
 public interface BuildingRepository extends BuildingRepositoryCustom,JpaRepository<BuildingEntity,Long > {
-    void deleteBuildingEntityById(Long id);
 }

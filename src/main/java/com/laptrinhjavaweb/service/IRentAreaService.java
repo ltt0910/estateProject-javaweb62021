@@ -4,5 +4,5 @@ import com.laptrinhjavaweb.dto.reponse.RentAreaDTO;
 
 public interface IRentAreaService {
     void addRentArea(RentAreaDTO rentAreaDTO);
-    void deleteRentArea(Long id);
+    void deleteRentArea(Long buildingId);
 }

@@ -8,8 +8,8 @@ public class  RentAreaEntity extends BaseEntity {
     @Column(name = "value")
     private Integer value;
 
-    @ManyToOne(cascade = {CascadeType.REMOVE})
-    @JoinColumn(name = "buildingid",nullable = false )
+    @ManyToOne
+    @JoinColumn(name = "buildingid",nullable = false)
     private BuildingEntity building;
 
     public Integer getValue() {
